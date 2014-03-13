@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		45906AA618D246D5008BC71D /* All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 45906AA918D246D5008BC71D /* Build configuration list for PBXAggregateTarget "All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				45906AAB18D246DE008BC71D /* PBXTargetDependency */,
+			);
+			name = All;
+			productName = All;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		4502ECF918D232130054451D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4502ECF818D232130054451D /* Foundation.framework */; };
 		4502ECFB18D232130054451D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4502ECFA18D232130054451D /* CoreGraphics.framework */; };
@@ -21,6 +35,14 @@
 		4502ED1A18D232140054451D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4502ECFC18D232130054451D /* UIKit.framework */; };
 		4502ED2218D232140054451D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4502ED2018D232140054451D /* InfoPlist.strings */; };
 		4502ED2418D232140054451D /* CoreTextHTMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502ED2318D232140054451D /* CoreTextHTMLTests.m */; };
+		45906A9E18D2468B008BC71D /* CCoreTextLabel_HTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A8E18D2468B008BC71D /* CCoreTextLabel_HTMLExtensions.m */; };
+		45906A9F18D2468B008BC71D /* CMarkupValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9018D2468B008BC71D /* CMarkupValueTransformer.m */; };
+		45906AA018D2468B008BC71D /* CSimpleHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9218D2468B008BC71D /* CSimpleHTMLParser.m */; };
+		45906AA118D2468B008BC71D /* NSAttributedString_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9418D2468B008BC71D /* NSAttributedString_Extensions.m */; };
+		45906AA218D2468B008BC71D /* NSScanner_HTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9618D2468B008BC71D /* NSScanner_HTMLExtensions.m */; };
+		45906AA318D2468B008BC71D /* NSString_HTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9818D2468B008BC71D /* NSString_HTMLExtensions.m */; };
+		45906AA418D2468B008BC71D /* UIFont_CoreTextExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9B18D2468B008BC71D /* UIFont_CoreTextExtensions.m */; };
+		45906AA518D2468B008BC71D /* UILabel+SimpleHTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9D18D2468B008BC71D /* UILabel+SimpleHTMLExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,28 +53,51 @@
 			remoteGlobalIDString = 4502ECF418D232130054451D;
 			remoteInfo = CoreTextHTML;
 		};
+		45906AAA18D246DE008BC71D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4502ECED18D232130054451D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4502ECF418D232130054451D;
+			remoteInfo = MarkupLabel;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4502ECF518D232130054451D /* CoreTextHTML.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreTextHTML.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4502ECF518D232130054451D /* MarkupLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarkupLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4502ECF818D232130054451D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4502ECFA18D232130054451D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4502ECFC18D232130054451D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		4502ED0018D232130054451D /* CoreTextHTML-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreTextHTML-Info.plist"; sourceTree = "<group>"; };
+		4502ED0018D232130054451D /* MarkupLabel-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MarkupLabel-Info.plist"; sourceTree = "<group>"; };
 		4502ED0218D232130054451D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4502ED0418D232130054451D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4502ED0618D232130054451D /* CoreTextHTML-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreTextHTML-Prefix.pch"; sourceTree = "<group>"; };
+		4502ED0618D232130054451D /* MarkupLabel-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MarkupLabel-Prefix.pch"; sourceTree = "<group>"; };
 		4502ED0718D232130054451D /* NIMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NIMAppDelegate.h; sourceTree = "<group>"; };
 		4502ED0818D232130054451D /* NIMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NIMAppDelegate.m; sourceTree = "<group>"; };
 		4502ED0B18D232130054451D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4502ED0D18D232130054451D /* NIMViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NIMViewController.h; sourceTree = "<group>"; };
 		4502ED0E18D232140054451D /* NIMViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NIMViewController.m; sourceTree = "<group>"; };
 		4502ED1018D232140054451D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		4502ED1618D232140054451D /* CoreTextHTMLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTextHTMLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4502ED1618D232140054451D /* MarkupLabelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarkupLabelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4502ED1718D232140054451D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		4502ED1F18D232140054451D /* CoreTextHTMLTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreTextHTMLTests-Info.plist"; sourceTree = "<group>"; };
+		4502ED1F18D232140054451D /* MarkupLabelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MarkupLabelTests-Info.plist"; sourceTree = "<group>"; };
 		4502ED2118D232140054451D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4502ED2318D232140054451D /* CoreTextHTMLTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreTextHTMLTests.m; sourceTree = "<group>"; };
+		45906A8D18D2468B008BC71D /* CCoreTextLabel_HTMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextLabel_HTMLExtensions.h; sourceTree = "<group>"; };
+		45906A8E18D2468B008BC71D /* CCoreTextLabel_HTMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoreTextLabel_HTMLExtensions.m; sourceTree = "<group>"; };
+		45906A8F18D2468B008BC71D /* CMarkupValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMarkupValueTransformer.h; sourceTree = "<group>"; };
+		45906A9018D2468B008BC71D /* CMarkupValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMarkupValueTransformer.m; sourceTree = "<group>"; };
+		45906A9118D2468B008BC71D /* CSimpleHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSimpleHTMLParser.h; sourceTree = "<group>"; };
+		45906A9218D2468B008BC71D /* CSimpleHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSimpleHTMLParser.m; sourceTree = "<group>"; };
+		45906A9318D2468B008BC71D /* NSAttributedString_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAttributedString_Extensions.h; sourceTree = "<group>"; };
+		45906A9418D2468B008BC71D /* NSAttributedString_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAttributedString_Extensions.m; sourceTree = "<group>"; };
+		45906A9518D2468B008BC71D /* NSScanner_HTMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSScanner_HTMLExtensions.h; sourceTree = "<group>"; };
+		45906A9618D2468B008BC71D /* NSScanner_HTMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSScanner_HTMLExtensions.m; sourceTree = "<group>"; };
+		45906A9718D2468B008BC71D /* NSString_HTMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_HTMLExtensions.h; sourceTree = "<group>"; };
+		45906A9818D2468B008BC71D /* NSString_HTMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_HTMLExtensions.m; sourceTree = "<group>"; };
+		45906A9A18D2468B008BC71D /* UIFont_CoreTextExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFont_CoreTextExtensions.h; sourceTree = "<group>"; };
+		45906A9B18D2468B008BC71D /* UIFont_CoreTextExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFont_CoreTextExtensions.m; sourceTree = "<group>"; };
+		45906A9C18D2468B008BC71D /* UILabel+SimpleHTMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+SimpleHTMLExtensions.h"; sourceTree = "<group>"; };
+		45906A9D18D2468B008BC71D /* UILabel+SimpleHTMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+SimpleHTMLExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +127,7 @@
 		4502ECEC18D232130054451D = {
 			isa = PBXGroup;
 			children = (
+				45906A8C18D2468B008BC71D /* Source */,
 				4502ECFE18D232130054451D /* CoreTextHTML */,
 				4502ED1D18D232140054451D /* CoreTextHTMLTests */,
 				4502ECF718D232130054451D /* Frameworks */,
@@ -92,8 +138,8 @@
 		4502ECF618D232130054451D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4502ECF518D232130054451D /* CoreTextHTML.app */,
-				4502ED1618D232140054451D /* CoreTextHTMLTests.xctest */,
+				4502ECF518D232130054451D /* MarkupLabel.app */,
+				4502ED1618D232140054451D /* MarkupLabelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -126,10 +172,10 @@
 		4502ECFF18D232130054451D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4502ED0018D232130054451D /* CoreTextHTML-Info.plist */,
+				4502ED0018D232130054451D /* MarkupLabel-Info.plist */,
 				4502ED0118D232130054451D /* InfoPlist.strings */,
 				4502ED0418D232130054451D /* main.m */,
-				4502ED0618D232130054451D /* CoreTextHTML-Prefix.pch */,
+				4502ED0618D232130054451D /* MarkupLabel-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -146,18 +192,41 @@
 		4502ED1E18D232140054451D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4502ED1F18D232140054451D /* CoreTextHTMLTests-Info.plist */,
+				4502ED1F18D232140054451D /* MarkupLabelTests-Info.plist */,
 				4502ED2018D232140054451D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		45906A8C18D2468B008BC71D /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				45906A8D18D2468B008BC71D /* CCoreTextLabel_HTMLExtensions.h */,
+				45906A8E18D2468B008BC71D /* CCoreTextLabel_HTMLExtensions.m */,
+				45906A8F18D2468B008BC71D /* CMarkupValueTransformer.h */,
+				45906A9018D2468B008BC71D /* CMarkupValueTransformer.m */,
+				45906A9118D2468B008BC71D /* CSimpleHTMLParser.h */,
+				45906A9218D2468B008BC71D /* CSimpleHTMLParser.m */,
+				45906A9318D2468B008BC71D /* NSAttributedString_Extensions.h */,
+				45906A9418D2468B008BC71D /* NSAttributedString_Extensions.m */,
+				45906A9518D2468B008BC71D /* NSScanner_HTMLExtensions.h */,
+				45906A9618D2468B008BC71D /* NSScanner_HTMLExtensions.m */,
+				45906A9718D2468B008BC71D /* NSString_HTMLExtensions.h */,
+				45906A9818D2468B008BC71D /* NSString_HTMLExtensions.m */,
+				45906A9A18D2468B008BC71D /* UIFont_CoreTextExtensions.h */,
+				45906A9B18D2468B008BC71D /* UIFont_CoreTextExtensions.m */,
+				45906A9C18D2468B008BC71D /* UILabel+SimpleHTMLExtensions.h */,
+				45906A9D18D2468B008BC71D /* UILabel+SimpleHTMLExtensions.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4502ECF418D232130054451D /* CoreTextHTML */ = {
+		4502ECF418D232130054451D /* MarkupLabel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4502ED2718D232140054451D /* Build configuration list for PBXNativeTarget "CoreTextHTML" */;
+			buildConfigurationList = 4502ED2718D232140054451D /* Build configuration list for PBXNativeTarget "MarkupLabel" */;
 			buildPhases = (
 				4502ECF118D232130054451D /* Sources */,
 				4502ECF218D232130054451D /* Frameworks */,
@@ -167,14 +236,14 @@
 			);
 			dependencies = (
 			);
-			name = CoreTextHTML;
+			name = MarkupLabel;
 			productName = CoreTextHTML;
-			productReference = 4502ECF518D232130054451D /* CoreTextHTML.app */;
+			productReference = 4502ECF518D232130054451D /* MarkupLabel.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4502ED1518D232140054451D /* CoreTextHTMLTests */ = {
+		4502ED1518D232140054451D /* MarkupLabelTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4502ED2A18D232140054451D /* Build configuration list for PBXNativeTarget "CoreTextHTMLTests" */;
+			buildConfigurationList = 4502ED2A18D232140054451D /* Build configuration list for PBXNativeTarget "MarkupLabelTests" */;
 			buildPhases = (
 				4502ED1218D232140054451D /* Sources */,
 				4502ED1318D232140054451D /* Frameworks */,
@@ -185,9 +254,9 @@
 			dependencies = (
 				4502ED1C18D232140054451D /* PBXTargetDependency */,
 			);
-			name = CoreTextHTMLTests;
+			name = MarkupLabelTests;
 			productName = CoreTextHTMLTests;
-			productReference = 4502ED1618D232140054451D /* CoreTextHTMLTests.xctest */;
+			productReference = 4502ED1618D232140054451D /* MarkupLabelTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -205,7 +274,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4502ECF018D232130054451D /* Build configuration list for PBXProject "CoreTextHTML" */;
+			buildConfigurationList = 4502ECF018D232130054451D /* Build configuration list for PBXProject "MarkupLabel" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -218,8 +287,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4502ECF418D232130054451D /* CoreTextHTML */,
-				4502ED1518D232140054451D /* CoreTextHTMLTests */,
+				45906AA618D246D5008BC71D /* All */,
+				4502ECF418D232130054451D /* MarkupLabel */,
+				4502ED1518D232140054451D /* MarkupLabelTests */,
 			);
 		};
 /* End PBXProject section */
@@ -251,8 +321,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4502ED0518D232130054451D /* main.m in Sources */,
+				45906AA018D2468B008BC71D /* CSimpleHTMLParser.m in Sources */,
+				45906AA418D2468B008BC71D /* UIFont_CoreTextExtensions.m in Sources */,
+				45906A9F18D2468B008BC71D /* CMarkupValueTransformer.m in Sources */,
 				4502ED0F18D232140054451D /* NIMViewController.m in Sources */,
+				45906AA218D2468B008BC71D /* NSScanner_HTMLExtensions.m in Sources */,
+				45906AA318D2468B008BC71D /* NSString_HTMLExtensions.m in Sources */,
 				4502ED0918D232130054451D /* NIMAppDelegate.m in Sources */,
+				45906A9E18D2468B008BC71D /* CCoreTextLabel_HTMLExtensions.m in Sources */,
+				45906AA518D2468B008BC71D /* UILabel+SimpleHTMLExtensions.m in Sources */,
+				45906AA118D2468B008BC71D /* NSAttributedString_Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,8 +347,13 @@
 /* Begin PBXTargetDependency section */
 		4502ED1C18D232140054451D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4502ECF418D232130054451D /* CoreTextHTML */;
+			target = 4502ECF418D232130054451D /* MarkupLabel */;
 			targetProxy = 4502ED1B18D232140054451D /* PBXContainerItemProxy */;
+		};
+		45906AAB18D246DE008BC71D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4502ECF418D232130054451D /* MarkupLabel */;
+			targetProxy = 45906AAA18D246DE008BC71D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -378,9 +461,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoreTextHTML/CoreTextHTML-Prefix.pch";
-				INFOPLIST_FILE = "CoreTextHTML/CoreTextHTML-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "CoreTextHTML/MarkupLabel-Prefix.pch";
+				INFOPLIST_FILE = "CoreTextHTML/MarkupLabel-Info.plist";
+				PRODUCT_NAME = MarkupLabel;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -391,9 +474,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoreTextHTML/CoreTextHTML-Prefix.pch";
-				INFOPLIST_FILE = "CoreTextHTML/CoreTextHTML-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "CoreTextHTML/MarkupLabel-Prefix.pch";
+				INFOPLIST_FILE = "CoreTextHTML/MarkupLabel-Info.plist";
+				PRODUCT_NAME = MarkupLabel;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -401,7 +484,7 @@
 		4502ED2B18D232140054451D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CoreTextHTML.app/CoreTextHTML";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MarkupLabel.app/MarkupLabel";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -413,8 +496,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "CoreTextHTMLTests/CoreTextHTMLTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "CoreTextHTMLTests/MarkupLabelTests-Info.plist";
+				PRODUCT_NAME = MarkupLabelTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -423,7 +506,7 @@
 		4502ED2C18D232140054451D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CoreTextHTML.app/CoreTextHTML";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MarkupLabel.app/MarkupLabel";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -431,17 +514,31 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoreTextHTML/CoreTextHTML-Prefix.pch";
-				INFOPLIST_FILE = "CoreTextHTMLTests/CoreTextHTMLTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "CoreTextHTMLTests/MarkupLabelTests-Info.plist";
+				PRODUCT_NAME = MarkupLabelTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		45906AA718D246D5008BC71D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		45906AA818D246D5008BC71D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4502ECF018D232130054451D /* Build configuration list for PBXProject "CoreTextHTML" */ = {
+		4502ECF018D232130054451D /* Build configuration list for PBXProject "MarkupLabel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4502ED2518D232140054451D /* Debug */,
@@ -450,19 +547,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4502ED2718D232140054451D /* Build configuration list for PBXNativeTarget "CoreTextHTML" */ = {
+		4502ED2718D232140054451D /* Build configuration list for PBXNativeTarget "MarkupLabel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4502ED2818D232140054451D /* Debug */,
 				4502ED2918D232140054451D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		4502ED2A18D232140054451D /* Build configuration list for PBXNativeTarget "CoreTextHTMLTests" */ = {
+		4502ED2A18D232140054451D /* Build configuration list for PBXNativeTarget "MarkupLabelTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4502ED2B18D232140054451D /* Debug */,
 				4502ED2C18D232140054451D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		45906AA918D246D5008BC71D /* Build configuration list for PBXAggregateTarget "All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45906AA718D246D5008BC71D /* Debug */,
+				45906AA818D246D5008BC71D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

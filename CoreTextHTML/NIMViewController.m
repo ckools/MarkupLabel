@@ -8,8 +8,10 @@
 
 #import "NIMViewController.h"
 
-@interface NIMViewController ()
+#import "UILabel+SimpleHTMLExtensions.h"
 
+@interface NIMViewController ()
+@property (readwrite, nonatomic, strong) IBOutlet UILabel *label;
 @end
 
 @implementation NIMViewController
@@ -17,13 +19,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    [self.label setMarkup:@"<b>Hello</b> world!"];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end
