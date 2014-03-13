@@ -1,6 +1,6 @@
 # MarkupLabel
 
-This is a subset of my CoreTextToy (https://github.com/schwa/CoreTextToy) extracted out into it's own github repo.
+This is a subset of my CoreTextToy (https://github.com/schwa/CoreTextToy) project extracted out into it's own github repo.
 
 Specifically this code allows you to use (simple) HTML markup with UILabel.
 
@@ -70,17 +70,9 @@ It uses a minimal subset of HTML. In fact don't think of it as pure HTML - think
 
 Only a handful of tags are supported right now, but you can define your own quite easily.
 
-The following tags are supported. More tags might be supported, see the source code for details.
+### What about all the tags CoreTextToy provides?
 
-* &lt;br&gt;
-* &lt;b&gt;
-* &lt;i&gt;
-* &lt;mark&gt;
-* &lt;strike&gt;
-
-### What about link (<a>) and image (<img>) tags?
-
-Img tags are not supported. You'll need to use CoreTextToy for that. Links might be supported pending further testing.
+UILabel isn't quite as configurable as CoreTextToy's label code. As such not all tags supported there are supported by this code. Go use CoreTextToy if you need image tags and strikethrough etc.
 
 ### So how do I get HTML into a UILabel?
 
