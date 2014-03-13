@@ -34,9 +34,9 @@
 #import <CoreText/CoreText.h>
 
 #import "CMarkupValueTransformer.h"
-#import "CSimpleHTMLParser.h"
-#import "NSAttributedString_Extensions.h"
-#import "UIColor+Hex.h"
+#import "CSimpleMarkupParser.h"
+#import "NSAttributedString+MarkupExtensions.h"
+#import "CColorConverter.h"
 
 @interface CMarkupValueTransformer ()
 @property (readwrite, nonatomic, strong) NSMutableDictionary *tagHandlers;
@@ -85,7 +85,7 @@
     __block NSMutableDictionary *theTextAttributes = NULL;
     __block NSURL *theCurrentLink = NULL;
 
-    CSimpleHTMLParser *theParser = [[CSimpleHTMLParser alloc] init];
+    CSimpleMarkupParser *theParser = [[CSimpleMarkupParser alloc] init];
     if (self.whitespaceCharacterSet != NULL)
         {
         theParser.whitespaceCharacterSet = self.whitespaceCharacterSet;
@@ -203,7 +203,7 @@
     // ### font
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
         NSString *theColorString = (inTag.attributes)[@"color"];
-        UIColor *theColor = [UIColor colorWithHexString:theColorString];
+        UIColor *theColor = [UIColor colorWithString:theColorString error:NULL];
         return(@{
 			(__bridge NSString *)kCTForegroundColorAttributeName: (__bridge id)theColor.CGColor,
             (__bridge id)kCTUnderlineStyleAttributeName: @(kCTUnderlineStyleSingle),
@@ -253,21 +253,6 @@
         return(inDictionary);
         };
     [self addHandler:theHandler forTag:inTag];
-    }
-
-@end
-
-#pragma mark -
-
-@implementation NSAttributedString (NSAttributedString_MarkupExtensions)
-
-+ (NSAttributedString *)attributedStringWithMarkup:(NSString *)inMarkup error:(NSError **)outError
-    {
-    CMarkupValueTransformer *theTransformer = [[CMarkupValueTransformer alloc] init];
-
-    NSAttributedString *theAttributedString = [theTransformer transformedValue:inMarkup error:outError];
-
-    return(theAttributedString);
     }
 
 @end

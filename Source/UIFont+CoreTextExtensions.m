@@ -29,7 +29,7 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import "UIFont_CoreTextExtensions.h"
+#import "UIFont+CoreTextExtensions.h"
 
 #import <objc/runtime.h>
 

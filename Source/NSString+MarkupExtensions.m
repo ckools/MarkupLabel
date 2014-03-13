@@ -1,5 +1,5 @@
 //
-//  NSString_HTMLExtensions.m
+//  NSString_MarkupExtensions.m
 //  TouchCode
 //
 //  Created by Jonathan Wight on 9/22/11.
@@ -29,9 +29,9 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of 2011 toxicsoftware.com.
 
-#import "NSString_HTMLExtensions.h"
+#import "NSString+MarkupExtensions.h"
 
-@implementation NSString (NSString_HTMLExtensions)
+@implementation NSString (NSString_MarkupExtensions)
 
 - (NSString *)stringByLinkifyingString
     {

@@ -1,5 +1,5 @@
 //
-//  CMarkupValueTransformer.h
+//  CSimpleMarkupParser.h
 //  TouchCode
 //
 //  Created by Jonathan Wight on 07/15/11.
@@ -31,26 +31,40 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const kSimpleHTMLParserErrorDomain /* = @"kSimpleHTMLParserErrorDomain" */;
+enum {
+    kSimpleHTMLParserErrorCode_UnknownError = -1,
+    kSimpleHTMLParserErrorCode_StackUnderflow = -2,
+    kSimpleHTMLParserErrorCode_MalformedEntity = -3,
+    };
+
 @class CSimpleHTMLTag;
 
-typedef NSDictionary *(^BTagHandler)(CSimpleHTMLTag *);
+@interface CSimpleMarkupParser : NSObject
 
-@interface CMarkupValueTransformer : NSValueTransformer
+@property (readwrite, nonatomic, copy) void (^openTagHandler)(CSimpleHTMLTag *tag, NSArray *tagStack);
+@property (readwrite, nonatomic, copy) void (^closeTagHandler)(CSimpleHTMLTag *tag, NSArray *tagStack);
+@property (readwrite, nonatomic, copy) void (^textHandler)(NSString *text, NSArray *tagStack);
 
 @property (readwrite, nonatomic, strong) NSCharacterSet *whitespaceCharacterSet;
 
-- (id)transformedValue:(id)value error:(NSError **)outError;
-
-- (void)resetStyles;
-- (void)addStandardStyles;
-
-- (void)addHandler:(BTagHandler)inHandler forTag:(NSString *)inTag;
-- (void)removeHandlerForTag:(NSString *)inTag;
+- (BOOL)parseString:(NSString *)inString error:(NSError **)outError;
 
 @end
 
 #pragma mark -
 
-@interface CMarkupValueTransformer (CMarkupValueTransformer_ConvenienceExtensions)
-- (void)addStyleHandlerWithAttributes:(NSDictionary *)inDictionary forTag:(NSString *)inTag;
+@interface CSimpleHTMLTag : NSObject
+@property (readwrite, nonatomic, strong) NSString *name;
+@property (readwrite, nonatomic, strong) NSDictionary *attributes;
 @end
+
+
+
+
+
+
+
+
+
+

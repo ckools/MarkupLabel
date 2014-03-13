@@ -1,5 +1,5 @@
 //
-//  CSimpleHTMLParser.h
+//  NSAttributedString+MarkupExtensions
 //  TouchCode
 //
 //  Created by Jonathan Wight on 07/15/11.
@@ -29,42 +29,25 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import <Foundation/Foundation.h>
 
-extern NSString *const kSimpleHTMLParserErrorDomain /* = @"kSimpleHTMLParserErrorDomain" */;
-enum {
-    kSimpleHTMLParserErrorCode_UnknownError = -1,
-    kSimpleHTMLParserErrorCode_StackUnderflow = -2,
-    kSimpleHTMLParserErrorCode_MalformedEntity = -3,
-    };
+#import <UIKit/UIKit.h>
 
-@class CSimpleHTMLTag;
+extern NSString *const kMarkupLinkAttributeName;
+extern NSString *const kMarkupBoldAttributeName;
+extern NSString *const kMarkupItalicAttributeName;
+extern NSString *const kMarkupSizeAdjustmentAttributeName;
+extern NSString *const kMarkupFontNameAttributeName;
+extern NSString *const kShadowColorAttributeName;
+extern NSString *const kShadowOffsetAttributeName;
+extern NSString *const kShadowBlurRadiusAttributeName;
+extern NSString *const kMarkupAttachmentAttributeName;
+extern NSString *const kMarkupBackgroundColorAttributeName;
+extern NSString *const kMarkupStrikeColorAttributeName;
+extern NSString *const kMarkupOutlineAttributeName;
 
-@interface CSimpleHTMLParser : NSObject
+@interface NSAttributedString (NSAttributedString_MarkupExtensions)
 
-@property (readwrite, nonatomic, copy) void (^openTagHandler)(CSimpleHTMLTag *tag, NSArray *tagStack);
-@property (readwrite, nonatomic, copy) void (^closeTagHandler)(CSimpleHTMLTag *tag, NSArray *tagStack);
-@property (readwrite, nonatomic, copy) void (^textHandler)(NSString *text, NSArray *tagStack);
-
-@property (readwrite, nonatomic, strong) NSCharacterSet *whitespaceCharacterSet;
-
-- (BOOL)parseString:(NSString *)inString error:(NSError **)outError;
++ (NSAttributedString *)normalizedAttributedStringForAttributedString:(NSAttributedString *)inAttributedString baseFont:(UIFont *)inBaseFont;
++ (NSDictionary *)normalizeAttributes:(NSDictionary *)inAttributes baseFont:(UIFont *)inBaseFont;
 
 @end
-
-#pragma mark -
-
-@interface CSimpleHTMLTag : NSObject
-@property (readwrite, nonatomic, strong) NSString *name;
-@property (readwrite, nonatomic, strong) NSDictionary *attributes;
-@end
-
-
-
-
-
-
-
-
-
-

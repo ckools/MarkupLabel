@@ -1,8 +1,8 @@
 //
-//  CMarkupValueTransformer.h
+//  NSScanner_HTMLExtensions.h
 //  TouchCode
 //
-//  Created by Jonathan Wight on 07/15/11.
+//  Created by Jonathan Wight on 9/21/11.
 //  Copyright 2011 toxicsoftware.com. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
@@ -15,9 +15,9 @@
 //        of conditions and the following disclaimer in the documentation and/or other materials
 //        provided with the distribution.
 //
-//  THIS SOFTWARE IS PROVIDED BY TOXICSOFTWARE.COM ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  THIS SOFTWARE IS PROVIDED BY 2011 TOXICSOFTWARE.COM ``AS IS'' AND ANY EXPRESS OR IMPLIED
 //  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TOXICSOFTWARE.COM OR
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 2011 TOXICSOFTWARE.COM OR
 //  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 //  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
 //  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
@@ -27,30 +27,14 @@
 //
 //  The views and conclusions contained in the software and documentation are those of the
 //  authors and should not be interpreted as representing official policies, either expressed
-//  or implied, of toxicsoftware.com.
+//  or implied, of 2011 toxicsoftware.com.
 
 #import <Foundation/Foundation.h>
 
-@class CSimpleHTMLTag;
+@interface NSScanner (MarkupExtensions)
 
-typedef NSDictionary *(^BTagHandler)(CSimpleHTMLTag *);
+- (BOOL)scanOpenTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
+- (BOOL)scanCloseTag:(NSString **)outTag;
+- (BOOL)scanStandaloneTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
 
-@interface CMarkupValueTransformer : NSValueTransformer
-
-@property (readwrite, nonatomic, strong) NSCharacterSet *whitespaceCharacterSet;
-
-- (id)transformedValue:(id)value error:(NSError **)outError;
-
-- (void)resetStyles;
-- (void)addStandardStyles;
-
-- (void)addHandler:(BTagHandler)inHandler forTag:(NSString *)inTag;
-- (void)removeHandlerForTag:(NSString *)inTag;
-
-@end
-
-#pragma mark -
-
-@interface CMarkupValueTransformer (CMarkupValueTransformer_ConvenienceExtensions)
-- (void)addStyleHandlerWithAttributes:(NSDictionary *)inDictionary forTag:(NSString *)inTag;
 @end

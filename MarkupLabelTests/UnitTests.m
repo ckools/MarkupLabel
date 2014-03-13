@@ -1,6 +1,6 @@
 //
-//  CoreTextHTMLTests.m
-//  CoreTextHTMLTests
+//  UnitTests.m
+//  UnitTests
 //
 //  Created by Jonathan Wight on 3/13/14.
 //  Copyright (c) 2014 schwa. All rights reserved.
@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface CoreTextHTMLTests : XCTestCase
+@interface UnitTests : XCTestCase
 
 @end
 
-@implementation CoreTextHTMLTests
+@implementation UnitTests
 
 - (void)setUp
 {

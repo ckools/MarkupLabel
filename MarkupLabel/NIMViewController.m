@@ -8,7 +8,7 @@
 
 #import "NIMViewController.h"
 
-#import "UILabel+SimpleHTMLExtensions.h"
+#import "UILabel+MarkupExtensions.h"
 
 @interface NIMViewController ()
 @property (readwrite, nonatomic, strong) IBOutlet UILabel *label;

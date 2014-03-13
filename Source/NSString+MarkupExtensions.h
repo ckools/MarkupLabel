@@ -1,5 +1,5 @@
 //
-//  NSString_HTMLExtensions.h
+//  NSString_MarkupExtensions.h
 //  TouchCode
 //
 //  Created by Jonathan Wight on 9/22/11.
@@ -31,7 +31,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString (NSString_HTMLExtensions)
+@interface NSString (NSString_MarkupExtensions)
 
 - (NSString *)stringByLinkifyingString;
 - (NSString *)stringByMarkingUpString;

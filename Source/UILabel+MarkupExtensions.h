@@ -1,9 +1,9 @@
 //
-//  NSScanner_HTMLExtensions.h
-//  TouchCode
+//  UILabel+MarkupExtensions.h
+//  CoreTextHTML
 //
-//  Created by Jonathan Wight on 9/21/11.
-//  Copyright 2011 toxicsoftware.com. All rights reserved.
+//  Created by Jonathan Wight on 3/13/14.
+//  Copyright (c) 2014 schwa. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
 //  permitted provided that the following conditions are met:
@@ -15,9 +15,9 @@
 //        of conditions and the following disclaimer in the documentation and/or other materials
 //        provided with the distribution.
 //
-//  THIS SOFTWARE IS PROVIDED BY 2011 TOXICSOFTWARE.COM ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  THIS SOFTWARE IS PROVIDED BY TOXICSOFTWARE.COM ``AS IS'' AND ANY EXPRESS OR IMPLIED
 //  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 2011 TOXICSOFTWARE.COM OR
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TOXICSOFTWARE.COM OR
 //  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 //  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
 //  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
@@ -27,14 +27,16 @@
 //
 //  The views and conclusions contained in the software and documentation are those of the
 //  authors and should not be interpreted as representing official policies, either expressed
-//  or implied, of 2011 toxicsoftware.com.
+//  or implied, of toxicsoftware.com.
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface NSScanner (HTMLExtensions)
+@class CMarkupValueTransformer;
 
-- (BOOL)scanOpenTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
-- (BOOL)scanCloseTag:(NSString **)outTag;
-- (BOOL)scanStandaloneTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
+@interface UILabel (MarkupExtensions)
+
+@property (readwrite, nonatomic, strong) CMarkupValueTransformer *markupValueTransformer;
+
+- (void)setMarkup:(NSString *)inMarkup;
 
 @end

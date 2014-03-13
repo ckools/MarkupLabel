@@ -29,9 +29,9 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of 2011 toxicsoftware.com.
 
-#import "NSScanner_HTMLExtensions.h"
+#import "NSScanner+MarkupExtensions.h"
 
-@implementation NSScanner (HTMLExtensions)
+@implementation NSScanner (MarkupExtensions)
 
 - (BOOL)scanOpenTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes
     {

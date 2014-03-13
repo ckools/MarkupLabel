@@ -1,5 +1,5 @@
 //
-//  CSimpleHTMLParser.m
+//  CSimpleMarkupParser.m
 //  TouchCode
 //
 //  Created by Jonathan Wight on 07/15/11.
@@ -29,18 +29,18 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import "CSimpleHTMLParser.h"
+#import "CSimpleMarkupParser.h"
 
-#import "NSScanner_HTMLExtensions.h"
+#import "NSScanner+MarkupExtensions.h"
 
 NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
 
-@interface CSimpleHTMLParser ()
+@interface CSimpleMarkupParser ()
 - (NSString *)stringForEntity:(NSString *)inEntity;
 @end
 
-@implementation CSimpleHTMLParser
+@implementation CSimpleMarkupParser
 
 - (id)init
 	{
