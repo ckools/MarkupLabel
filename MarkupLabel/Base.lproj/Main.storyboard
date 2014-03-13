@@ -16,8 +16,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ibU-pj-eN6">
-                                <rect key="frame" x="139" y="273" width="42" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;b>Hello&lt;/b> World" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ibU-pj-eN6">
+                                <rect key="frame" x="20" y="20" width="156" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;i>This&lt;/i> is emphasised." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Wu-Rc-IgZ">
+                                <rect key="frame" x="20" y="49" width="206" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;a href=&quot;http://schwa.io&quot;>Links might work&lt;/a>" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bzC-v9-ull">
+                                <rect key="frame" x="20" y="78" width="370" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -26,13 +40,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ibU-pj-eN6" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="253" id="W34-Dg-gNs"/>
-                            <constraint firstItem="ibU-pj-eN6" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="p2l-7T-9yu"/>
+                            <constraint firstItem="bzC-v9-ull" firstAttribute="top" secondItem="1Wu-Rc-IgZ" secondAttribute="bottom" constant="8" symbolic="YES" id="02h-On-jUy"/>
+                            <constraint firstItem="ibU-pj-eN6" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="20" symbolic="YES" id="9di-fJ-vQw"/>
+                            <constraint firstItem="ibU-pj-eN6" firstAttribute="leading" secondItem="1Wu-Rc-IgZ" secondAttribute="leading" id="FIr-OR-WAC"/>
+                            <constraint firstItem="bzC-v9-ull" firstAttribute="leading" secondItem="1Wu-Rc-IgZ" secondAttribute="leading" id="Oye-rH-rHA"/>
+                            <constraint firstItem="1Wu-Rc-IgZ" firstAttribute="top" secondItem="ibU-pj-eN6" secondAttribute="bottom" constant="8" symbolic="YES" id="UVW-o5-dsN"/>
+                            <constraint firstItem="ibU-pj-eN6" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="uDQ-8a-tQB"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="label" destination="ibU-pj-eN6" id="ERY-JO-TvF"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>

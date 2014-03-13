@@ -11,7 +11,6 @@
 #import "UILabel+MarkupExtensions.h"
 
 @interface NIMViewController ()
-@property (readwrite, nonatomic, strong) IBOutlet UILabel *label;
 @end
 
 @implementation NIMViewController
@@ -20,7 +19,17 @@
 {
     [super viewDidLoad];
 
-    [self.label setMarkup:@"<b>Hello</b> world!"];
+    for (id theSubview in self.view.subviews)
+        {
+        if ([theSubview isKindOfClass:[UILabel class]] == NO)
+            {
+            continue;
+            }
+
+        UILabel *theLabel = theSubview;
+        [theLabel setMarkup:theLabel.text];
+        }
+
 }
 
 
