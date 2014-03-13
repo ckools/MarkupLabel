@@ -169,7 +169,7 @@
     // ### a
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
         return(@{
-			(__bridge NSString *)kCTForegroundColorAttributeName: (__bridge id)[UIColor blueColor].CGColor,
+			NSForegroundColorAttributeName: [UIColor blueColor],
             (__bridge id)kCTUnderlineStyleAttributeName: @(kCTUnderlineStyleSingle),
 			});
         };
@@ -177,7 +177,9 @@
 
     // ### mark
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
-        return(@{kMarkupBackgroundColorAttributeName: (__bridge id)[UIColor yellowColor].CGColor});
+        return(@{
+			NSForegroundColorAttributeName: [UIColor yellowColor],
+			});
         };
     [self addHandler:theTagHandler forTag:@"mark"];
 
@@ -193,7 +195,6 @@
         };
     [self addHandler:theTagHandler forTag:@"outline"];
 
-
     // ### small
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
         return(@{kMarkupSizeAdjustmentAttributeName: @-4.0f});
@@ -205,7 +206,7 @@
         NSString *theColorString = (inTag.attributes)[@"color"];
         UIColor *theColor = [UIColor colorWithString:theColorString error:NULL];
         return(@{
-			(__bridge NSString *)kCTForegroundColorAttributeName: (__bridge id)theColor.CGColor,
+			NSForegroundColorAttributeName: theColor,
             (__bridge id)kCTUnderlineStyleAttributeName: @(kCTUnderlineStyleSingle),
 			});
         };
