@@ -47,12 +47,20 @@
         NSRange theRange = result.range;
         if (theRange.length > 0)
             {
-            NSString *theString = [self substringWithRange:(NSRange){ .location = theLastRange.location + theLastRange.length, theRange.location - theLastRange.location + theLastRange.length }];
+            NSRange theSubrange = { .location = theLastRange.location + theLastRange.length, theRange.location - (theLastRange.location + theLastRange.length) };
+            NSString *theString = [self substringWithRange:theSubrange];
             [theReplacementString appendString:theString];
 
             NSURL *theURL = result.URL;
-            theString = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", theURL.absoluteURL, theURL.absoluteURL];
-            [theReplacementString appendString:theString];
+            if (theURL == NULL)
+                {
+                [theReplacementString appendString:[self substringWithRange:theRange]];
+                }
+            else
+                {
+                theString = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", theURL.absoluteURL, theURL.absoluteURL];
+                [theReplacementString appendString:theString];
+                }
             }
         else
             {
