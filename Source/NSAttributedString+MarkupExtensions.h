@@ -32,17 +32,12 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const kMarkupLinkAttributeName;
 extern NSString *const kMarkupBoldAttributeName;
 extern NSString *const kMarkupItalicAttributeName;
 extern NSString *const kMarkupSizeAdjustmentAttributeName;
 extern NSString *const kMarkupFontNameAttributeName;
-extern NSString *const kShadowColorAttributeName;
-extern NSString *const kShadowOffsetAttributeName;
-extern NSString *const kShadowBlurRadiusAttributeName;
+extern NSString *const kMarkupFontSizeAttributeName;
 extern NSString *const kMarkupAttachmentAttributeName;
-extern NSString *const kMarkupBackgroundColorAttributeName;
-extern NSString *const kMarkupStrikeColorAttributeName;
 extern NSString *const kMarkupOutlineAttributeName;
 
 @interface NSAttributedString (NSAttributedString_MarkupExtensions)

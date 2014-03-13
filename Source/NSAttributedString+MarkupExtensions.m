@@ -31,17 +31,12 @@
 #import "CMarkupValueTransformer.h"
 #import "UIFont+CoreTextExtensions.h"
 
-NSString *const kMarkupLinkAttributeName = @"com.touchcode.link";
 NSString *const kMarkupBoldAttributeName = @"com.touchcode.bold";
 NSString *const kMarkupItalicAttributeName = @"com.touchcode.italic";
 NSString *const kMarkupSizeAdjustmentAttributeName = @"com.touchcode.sizeAdjustment";
 NSString *const kMarkupFontNameAttributeName = @"com.touchcode.fontName";
-NSString *const kShadowColorAttributeName = @"com.touchcode.shadowColor";
-NSString *const kShadowOffsetAttributeName = @"com.touchcode.shadowOffset";
-NSString *const kShadowBlurRadiusAttributeName = @"com.touchcode.shadowBlurRadius";
+NSString *const kMarkupFontSizeAttributeName = @"com.touchcode.fontSize";
 NSString *const kMarkupAttachmentAttributeName = @"com.touchcode.attachment";
-NSString *const kMarkupBackgroundColorAttributeName = @"com.touchcode.backgroundColor";
-NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
 NSString *const kMarkupOutlineAttributeName = @"com.touchcode.outline";
 
 @implementation NSAttributedString (NSAttributedString_MarkupExtensions)
@@ -107,13 +102,23 @@ NSString *const kMarkupOutlineAttributeName = @"com.touchcode.outline";
     if (theAttributes[kMarkupOutlineAttributeName] != NULL)
         {
         [theAttributes removeObjectForKey:kMarkupOutlineAttributeName];
-		theAttributes[(__bridge NSString *)kCTStrokeWidthAttributeName] = @(3.0);
+		theAttributes[NSStrokeWidthAttributeName] = @(3.0);
         }
 
-    NSNumber *theSizeValue = theAttributes[kMarkupSizeAdjustmentAttributeName];
+    NSNumber *theSizeValue = theAttributes[kMarkupFontSizeAttributeName];
     if (theSizeValue != NULL)
         {
         CGFloat theSize = [theSizeValue floatValue];
+        theFont = [theFont fontWithSize:theSize];
+        
+        [theAttributes removeObjectForKey:kMarkupFontSizeAttributeName];
+        }
+
+
+    NSNumber *theSizeAdjustment = theAttributes[kMarkupSizeAdjustmentAttributeName];
+    if (theSizeAdjustment != NULL)
+        {
+        CGFloat theSize = [theSizeAdjustment floatValue];
         theFont = [theFont fontWithSize:theFont.pointSize + theSize];
         
         [theAttributes removeObjectForKey:kMarkupSizeAdjustmentAttributeName];
@@ -121,7 +126,8 @@ NSString *const kMarkupOutlineAttributeName = @"com.touchcode.outline";
 
     if (theFont != NULL)
         {
-        theAttributes[(__bridge NSString *)kCTFontAttributeName] = (__bridge id)theFont.CTFont;
+        theAttributes[NSFontAttributeName] = theFont;
+//        theAttributes[(__bridge NSString *)kCTFontAttributeName] = (__bridge id)theFont.CTFont;
         }
         
     return(theAttributes);

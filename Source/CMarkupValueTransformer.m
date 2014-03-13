@@ -120,19 +120,18 @@
 
         if (theCurrentLink != NULL)
             {
-            theTextAttributes[kMarkupLinkAttributeName] = theCurrentLink;
+            theTextAttributes[NSLinkAttributeName] = theCurrentLink;
             }
         
         [theAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:inString attributes:theTextAttributes]];
         };
 
-        // In this section we use the NSScanner method
-        // - (BOOL)scanCharactersFromSet:(NSCharacterSet *)scanSet intoString:(NSString **)stringValue
-        // Apparently `stringValue` is autoreleased and ARC does not handle that properly.
-        // Therefore we need this autorelease pool.
-        @autoreleasepool
+    // In this section we use the NSScanner method
+    // - (BOOL)scanCharactersFromSet:(NSCharacterSet *)scanSet intoString:(NSString **)stringValue
+    // Apparently `stringValue` is autoreleased and ARC does not handle that properly.
+    // Therefore we need this autorelease pool.
+    @autoreleasepool
         {
-            
         if ([theParser parseString:theMarkup error:outError] == NO)
             {
             return(NULL);
@@ -170,7 +169,7 @@
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
         return(@{
 			NSForegroundColorAttributeName: [UIColor blueColor],
-            (__bridge id)kCTUnderlineStyleAttributeName: @(kCTUnderlineStyleSingle),
+            NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
 			});
         };
     [self addHandler:theTagHandler forTag:@"a"];
@@ -185,7 +184,9 @@
 
     // ### strike
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
-        return(@{kMarkupStrikeColorAttributeName: (__bridge id)[UIColor blackColor].CGColor});
+        return(@{
+            NSStrikethroughStyleAttributeName: @(NSUnderlineStyleSingle)
+            });
         };
     [self addHandler:theTagHandler forTag:@"strike"];
 
@@ -203,14 +204,47 @@
 
     // ### font
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
-        NSString *theColorString = (inTag.attributes)[@"color"];
-        UIColor *theColor = [UIColor colorWithString:theColorString error:NULL];
-        return(@{
-			NSForegroundColorAttributeName: theColor,
-            (__bridge id)kCTUnderlineStyleAttributeName: @(kCTUnderlineStyleSingle),
-			});
+
+        NSMutableDictionary *theStyle = [NSMutableDictionary dictionary];
+
+        NSString *theFaceAttribute = inTag.attributes[@"face"];
+        if (theFaceAttribute.length > 0)
+            {
+            theStyle[kMarkupFontNameAttributeName] = theFaceAttribute;
+            }
+        NSString *theColorString = inTag.attributes[@"color"];
+        if (theColorString.length > 0)
+            {
+            UIColor *theColor = [UIColor colorWithString:theColorString error:NULL];
+            theStyle[NSForegroundColorAttributeName] = theColor;
+            }
+        NSString *theSizeString = inTag.attributes[@"size"];
+        if (theSizeString.length > 0)
+            {
+            theStyle[kMarkupFontSizeAttributeName] = @(theSizeString.floatValue);
+            }
+        return(theStyle);
         };
     [self addHandler:theTagHandler forTag:@"font"];
+
+
+    // ### Shadows
+    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+        NSShadow *theShadow = [[NSShadow alloc] init];
+        theShadow.shadowOffset = (CGSize){ 1, 1 };
+        return(@{
+            NSShadowAttributeName: theShadow,
+            });
+        };
+    [self addHandler:theTagHandler forTag:@"xshadow"];
+
+    // ### Letter Press
+    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+        return(@{
+            NSTextEffectAttributeName: NSTextEffectLetterpressStyle,
+            });
+        };
+    [self addHandler:theTagHandler forTag:@"xletterpress"];
     }
 
 - (void)addHandler:(BTagHandler)inHandler forTag:(NSString *)inTag
