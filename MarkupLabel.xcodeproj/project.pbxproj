@@ -35,6 +35,12 @@
 		4502ED1A18D232140054451D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4502ECFC18D232130054451D /* UIKit.framework */; };
 		4502ED2218D232140054451D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4502ED2018D232140054451D /* InfoPlist.strings */; };
 		4502ED2418D232140054451D /* UnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502ED2318D232140054451D /* UnitTests.m */; };
+		4570EB0918D29EF40019D600 /* CMarkupTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9018D2468B008BC71D /* CMarkupTransformer.m */; };
+		4570EB0A18D29EF40019D600 /* CSimpleMarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9218D2468B008BC71D /* CSimpleMarkupParser.m */; };
+		4570EB0B18D29EF40019D600 /* NSString+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9818D2468B008BC71D /* NSString+MarkupExtensions.m */; };
+		4570EB0C18D29EF40019D600 /* UIFont+StyleUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9B18D2468B008BC71D /* UIFont+StyleUtilities.m */; };
+		4570EB0D18D29EF40019D600 /* UILabel+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9D18D2468B008BC71D /* UILabel+MarkupExtensions.m */; };
+		4570EB0E18D29EF40019D600 /* CColorConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AAD18D24984008BC71D /* CColorConverter.m */; };
 		45906A9F18D2468B008BC71D /* CMarkupTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9018D2468B008BC71D /* CMarkupTransformer.m */; };
 		45906AA018D2468B008BC71D /* CSimpleMarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9218D2468B008BC71D /* CSimpleMarkupParser.m */; };
 		45906AA318D2468B008BC71D /* NSString+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9818D2468B008BC71D /* NSString+MarkupExtensions.m */; };
@@ -77,7 +83,7 @@
 		4502ED1018D232140054451D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4502ED1618D232140054451D /* MarkupLabelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarkupLabelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4502ED1718D232140054451D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		4502ED1F18D232140054451D /* MarkupLabelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.info; path = "MarkupLabelTests-Info.plist"; sourceTree = "<group>"; };
+		4502ED1F18D232140054451D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4502ED2118D232140054451D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4502ED2318D232140054451D /* UnitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTests.m; sourceTree = "<group>"; };
 		45906A8F18D2468B008BC71D /* CMarkupTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMarkupTransformer.h; sourceTree = "<group>"; };
@@ -186,7 +192,7 @@
 		4502ED1E18D232140054451D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4502ED1F18D232140054451D /* MarkupLabelTests-Info.plist */,
+				4502ED1F18D232140054451D /* Info.plist */,
 				4502ED2018D232140054451D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -327,6 +333,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4502ED2418D232140054451D /* UnitTests.m in Sources */,
+				4570EB0B18D29EF40019D600 /* NSString+MarkupExtensions.m in Sources */,
+				4570EB0D18D29EF40019D600 /* UILabel+MarkupExtensions.m in Sources */,
+				4570EB0E18D29EF40019D600 /* CColorConverter.m in Sources */,
+				4570EB0918D29EF40019D600 /* CMarkupTransformer.m in Sources */,
+				4570EB0A18D29EF40019D600 /* CSimpleMarkupParser.m in Sources */,
+				4570EB0C18D29EF40019D600 /* UIFont+StyleUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,12 +491,11 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoreTextHTML/CoreTextHTML-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "CoreTextHTMLTests/MarkupLabelTests-Info.plist";
+				INFOPLIST_FILE = MarkupLabelTests/Info.plist;
 				PRODUCT_NAME = MarkupLabelTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -501,8 +512,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoreTextHTML/CoreTextHTML-Prefix.pch";
-				INFOPLIST_FILE = "CoreTextHTMLTests/MarkupLabelTests-Info.plist";
+				INFOPLIST_FILE = MarkupLabelTests/Info.plist;
 				PRODUCT_NAME = MarkupLabelTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

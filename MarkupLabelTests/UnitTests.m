@@ -8,27 +8,46 @@
 
 #import <XCTest/XCTest.h>
 
+#import "CMarkupTransformer.h"
+
 @interface UnitTests : XCTestCase
 
 @end
 
 @implementation UnitTests
 
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
+- (void)testCollapseWhitespace1
+    {
+    CMarkupTransformer *theTransformer = [[CMarkupTransformer alloc] init];
+    NSAttributedString *theAttributedString = [theTransformer transformMarkup:@"Hello   world" baseFont:NULL error:NULL];
+    NSString *theOutputString = [theAttributedString string];
+    XCTAssertEqualObjects(theOutputString, @"Hello world");
+    }
 
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
+//- (void)testCollapseWhitespace2
+//    {
+//    CMarkupTransformer *theTransformer = [[CMarkupTransformer alloc] init];
+//    theTransformer.whitespaceCharacterSet = NULL;
+//    NSAttributedString *theAttributedString = [theTransformer transformMarkup:@"Hello   world" baseFont:NULL error:NULL];
+//    NSString *theOutputString = [theAttributedString string];
+//    XCTAssertEqualObjects(theOutputString, @"Hello   world");
+//    }
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+//- (void)testCollapseWhitespace3
+//    {
+//    CMarkupTransformer *theTransformer = [[CMarkupTransformer alloc] init];
+//    NSAttributedString *theAttributedString = [theTransformer transformMarkup:@"Hello\nworld" baseFont:NULL error:NULL];
+//    NSString *theOutputString = [theAttributedString string];
+//    XCTAssertEqualObjects(theOutputString, @"Hello world");
+//    }
+
+//- (void)testCollapseWhitespace4
+//    {
+//    CMarkupTransformer *theTransformer = [[CMarkupTransformer alloc] init];
+//    theTransformer.whitespaceCharacterSet = NULL;
+//    NSAttributedString *theAttributedString = [theTransformer transformMarkup:@"Hello\nworld" baseFont:NULL error:NULL];
+//    NSString *theOutputString = [theAttributedString string];
+//    XCTAssertEqualObjects(theOutputString, @"Hello world");
+//    }
 
 @end

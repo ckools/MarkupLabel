@@ -29,10 +29,6 @@
 //	authors and should not be interpreted as representing official policies, either expressed
 //	or implied, of Jonathan Wight.
 
-#if TARGET_OS_IPHONE == 1
-#import <UIKit/UIKit.h>
-#endif
-
 #import <Foundation/Foundation.h>
 
 /**
@@ -50,6 +46,8 @@
 
 #if TARGET_OS_IPHONE == 1
 
+#import <UIKit/UIKit.h>
+
 @interface CColorConverter (UIColor)
 - (UIColor *)colorWithColorDictionary:(NSDictionary *)inDictionary error:(NSError **)outError;
 - (UIColor *)colorWithString:(NSString *)inString error:(NSError **)outError;
@@ -58,5 +56,4 @@
 @interface UIColor (CColorConverter)
 + (UIColor *)colorWithString:(NSString *)inString error:(NSError **)outError;
 @end
-
 #endif /* TARGET_OS_IPHONE == 1 */

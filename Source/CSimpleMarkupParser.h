@@ -47,6 +47,9 @@ enum {
 @property (readwrite, nonatomic, copy) void (^closeTagHandler)(CSimpleMarkupTag *tag, NSArray *tagStack);
 @property (readwrite, nonatomic, copy) void (^textHandler)(NSString *text, NSArray *tagStack);
 
+/**
+ *  Runs of characters in this character set will be collapsed into single spaces. If you want to preserve new lines then this property should be set to [NSCharacterSet whiteSpaceCharacterSet]. TODO Should probably be a simple flag.
+ */
 @property (readwrite, nonatomic) NSCharacterSet *whitespaceCharacterSet;
 
 - (BOOL)parseString:(NSString *)inString error:(NSError **)outError;

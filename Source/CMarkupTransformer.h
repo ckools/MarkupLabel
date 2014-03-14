@@ -29,7 +29,7 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 extern NSString *const kMarkupBoldMetaAttributeName;
 extern NSString *const kMarkupItalicMetaAttributeName;
@@ -40,15 +40,8 @@ extern NSString *const kMarkupOutlineMetaAttributeName;
 
 #pragma mark -
 
-@protocol CMarkupTransformerContext <NSObject>
-@property (readonly, nonatomic) NSAttributedString *currentString;
-@end
-
-#pragma mark -
-
+@protocol CMarkupTransformerContext;
 @class CSimpleMarkupTag;
-
-#pragma mark -
 
 typedef NSDictionary *(^MarkupTagHandler)(CSimpleMarkupTag *tag, id <CMarkupTransformerContext> context);
 
@@ -65,4 +58,10 @@ typedef NSDictionary *(^MarkupTagHandler)(CSimpleMarkupTag *tag, id <CMarkupTran
 - (void)addHandler:(MarkupTagHandler)inHandler forTag:(NSString *)inTag;
 - (void)removeHandlerForTag:(NSString *)inTag;
 
+@end
+
+#pragma mark -
+
+@protocol CMarkupTransformerContext <NSObject>
+@property (readonly, nonatomic) NSAttributedString *currentString;
 @end
