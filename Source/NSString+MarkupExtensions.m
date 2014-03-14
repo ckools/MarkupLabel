@@ -36,7 +36,7 @@
 - (NSString *)stringByLinkifyingString
     {
     NSError *theError = NULL;
-    NSDataDetector *theDataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingAllSystemTypes error:&theError];
+    NSDataDetector *theDataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&theError];
 
     NSMutableString *theReplacementString = [NSMutableString string];
 

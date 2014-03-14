@@ -35,10 +35,29 @@
 
 @interface UIFont (StyleUtilities)
 
+/**
+ *  Returns the bold variant of the target font.
+ */
 - (UIFont *)boldFont;
+
+/**
+ *  Returns the italic variant of the target font.
+ */
 - (UIFont *)italicFont;
+
+/**
+ *  Returns the bold and italic variant of the target font.
+ */
 - (UIFont *)boldItalicFont;
+
+/**
+ *  Returns the oblique variant of the target font.
+ */
 - (UIFont *)obliqueFont;
+
+/**
+ *  Returns the bold and oblique variant of the target font.
+ */
 - (UIFont *)boldObliqueFont;
 
 @end

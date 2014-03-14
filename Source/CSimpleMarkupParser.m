@@ -33,10 +33,9 @@
 
 NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
-@interface NSScanner (MarkupExtensions)
-- (BOOL)scanOpenMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
-- (BOOL)scanCloseMarkupTag:(NSString **)outTag;
-- (BOOL)scanStandaloneMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
+@interface CSimpleMarkupTag ()
+@property (readwrite, nonatomic) NSString *name;
+@property (readwrite, nonatomic) NSDictionary *attributes;
 @end
 
 #pragma mark -
@@ -52,8 +51,8 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 	{
 	if ((self = [super init]) != NULL)
 		{
-        _openTagHandler = ^(CSimpleHTMLTag *tag, NSArray *tagStack) {};
-        _closeTagHandler = ^(CSimpleHTMLTag *tag, NSArray *tagStack) {};
+        _openTagHandler = ^(CSimpleMarkupTag *tag, NSArray *tagStack) {};
+        _closeTagHandler = ^(CSimpleMarkupTag *tag, NSArray *tagStack) {};
         _textHandler = ^(NSString *text, NSArray *tagStack) {};
         _whitespaceCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 		}
@@ -105,9 +104,9 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                 NSString *theTagName = NULL;
                 NSDictionary *theAttributes = NULL;
 
-                if ([theScanner scanCloseMarkupTag:&theTagName] == YES)
+                if ([self scanner:theScanner scanCloseMarkupTag:&theTagName] == YES)
                     {
-                    CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
+                    CSimpleMarkupTag *theTag = [[CSimpleMarkupTag alloc] init];
                     theTag.name = theTagName;
                     
                     if (theString.length > 0)
@@ -132,9 +131,9 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
                     [theTagStack removeObjectsInRange:(NSRange){ .location = theIndex, .length = theTagStack.count - theIndex }];
                     }
-                else if ([theScanner scanOpenMarkupTag:&theTagName attributes:&theAttributes] == YES)
+                else if ([self scanner:theScanner scanOpenMarkupTag:&theTagName attributes:&theAttributes] == YES)
                     {
-                    CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
+                    CSimpleMarkupTag *theTag = [[CSimpleMarkupTag alloc] init];
                     theTag.name = theTagName;
                     theTag.attributes = theAttributes;
 
@@ -158,9 +157,9 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                         [theTagStack addObject:theTag];
                         }
                     }
-                else if ([theScanner scanStandaloneMarkupTag:&theTagName attributes:&theAttributes] == YES)
+                else if ([self scanner:theScanner scanStandaloneMarkupTag:&theTagName attributes:&theAttributes] == YES)
                     {
-                    CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
+                    CSimpleMarkupTag *theTag = [[CSimpleMarkupTag alloc] init];
                     theTag.name = theTagName;
                     theTag.attributes = theAttributes;
 
@@ -260,213 +259,207 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
     return(YES);
     }
 
+- (BOOL)scanner:(NSScanner *)inScanner scanOpenMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes
+    {
+    NSUInteger theSavedScanLocation = inScanner.scanLocation;
+    NSCharacterSet *theSavedCharactersToBeSkipped = inScanner.charactersToBeSkipped;
+
+    if ([inScanner scanString:@"<" intoString:NULL] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+        return(NO);
+        }
+
+    inScanner.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+
+    NSString *theTag = NULL;
+    if ([inScanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theTag] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+        return(NO);
+        }
+
+    NSMutableDictionary *theAttributes = [NSMutableDictionary dictionary];
+    while (inScanner.isAtEnd == NO)
+        {
+        NSString *theAttributeName = NULL;
+        if ([inScanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theAttributeName] == NO)
+            {
+            break;
+            }
+
+        id theAttributeValue = [NSNull null];
+
+        if ([inScanner scanString:@"=" intoString:NULL] == YES)
+            {
+            if ([inScanner scanString:@"\"" intoString:NULL] == NO)
+                {
+                inScanner.scanLocation = theSavedScanLocation;
+                inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+                return(NO);
+                }
+
+            [inScanner scanUpToString:@"\"" intoString:&theAttributeValue];
+
+            if ([inScanner scanString:@"\"" intoString:NULL] == NO)
+                {
+                inScanner.scanLocation = theSavedScanLocation;
+                inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+                return(NO);
+                }
+            }
+
+        theAttributes[theAttributeName] = theAttributeValue;
+        }
+
+    if ([inScanner scanString:@">" intoString:NULL] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+        return(NO);
+        }
+
+    if (outTag)
+        {
+        *outTag = theTag;
+        }
+
+    if (outAttributes && [theAttributes count] > 0)
+        {
+        *outAttributes = [theAttributes copy];
+        }
+
+    inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+    return(YES);
+    }
+
+- (BOOL)scanner:(NSScanner *)inScanner scanCloseMarkupTag:(NSString **)outTag
+    {
+    NSUInteger theSavedScanLocation = inScanner.scanLocation;
+    NSCharacterSet *theSavedCharactersToBeSkipped = inScanner.charactersToBeSkipped;
+
+    NSString *theTag = NULL;
+
+    if ([inScanner scanString:@"</" intoString:NULL] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+        return(NO);
+        }
+        
+    inScanner.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+
+    if ([inScanner scanUpToString:@">" intoString:&theTag] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+
+        return(NO);
+        }
+
+    if ([inScanner scanString:@">" intoString:NULL] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+        return(NO);
+        }
+
+    if (outTag)
+        {
+        *outTag = theTag;
+        }
+
+    inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+    return(YES);
+    }
+
+- (BOOL)scanner:(NSScanner *)inScanner scanStandaloneMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
+    {
+    NSUInteger theSavedScanLocation = inScanner.scanLocation;
+    NSCharacterSet *theSavedCharactersToBeSkipped = inScanner.charactersToBeSkipped;
+
+    if ([inScanner scanString:@"<" intoString:NULL] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+        return(NO);
+        }
+
+    inScanner.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+
+    NSString *theTag = NULL;
+    if ([inScanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theTag] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+        return(NO);
+        }
+
+    NSMutableDictionary *theAttributes = [NSMutableDictionary dictionary];
+    while (inScanner.isAtEnd == NO)
+        {
+        NSString *theAttributeName = NULL;
+        if ([inScanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theAttributeName] == NO)
+            {
+            break;
+            }
+
+        id theAttributeValue = [NSNull null];
+
+        if ([inScanner scanString:@"=" intoString:NULL] == YES)
+            {
+            if ([inScanner scanString:@"\"" intoString:NULL] == NO)
+                {
+                inScanner.scanLocation = theSavedScanLocation;
+                inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+                return(NO);
+                }
+
+            [inScanner scanUpToString:@"\"" intoString:&theAttributeValue];
+
+            if ([inScanner scanString:@"\"" intoString:NULL] == NO)
+                {
+                inScanner.scanLocation = theSavedScanLocation;
+                inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+                return(NO);
+                }
+            }
+
+        theAttributes[theAttributeName] = theAttributeValue;
+        }
+
+    if ([inScanner scanString:@"/>" intoString:NULL] == NO)
+        {
+        inScanner.scanLocation = theSavedScanLocation;
+        inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+        return(NO);
+        }
+
+    if (outTag)
+        {
+        *outTag = theTag;
+        }
+
+    if (outAttributes && [theAttributes count] > 0)
+        {
+        *outAttributes = [theAttributes copy];
+        }
+
+    inScanner.charactersToBeSkipped = theSavedCharactersToBeSkipped;
+    return(YES);
+    }
+
 @end
 
 #pragma mark - 
 
-@implementation CSimpleHTMLTag
+@implementation CSimpleMarkupTag
 
 - (NSString *)description
     {
     return([NSString stringWithFormat:@"%@ (%@, %@)", [super description], self.name, self.attributes]);
-    }
-
-@end
-
-#pragma mark -
-
-@implementation NSScanner (MarkupExtensions)
-
-- (BOOL)scanOpenMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes
-    {
-    NSUInteger theSavedScanLocation = self.scanLocation;
-    NSCharacterSet *theSavedCharactersToBeSkipped = self.charactersToBeSkipped;
-
-    if ([self scanString:@"<" intoString:NULL] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-        return(NO);
-        }
-
-    self.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-
-    NSString *theTag = NULL;
-    if ([self scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theTag] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-        return(NO);
-        }
-
-    NSMutableDictionary *theAttributes = [NSMutableDictionary dictionary];
-    while (self.isAtEnd == NO)
-        {
-        NSString *theAttributeName = NULL;
-        if ([self scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theAttributeName] == NO)
-            {
-            break;
-            }
-
-        id theAttributeValue = [NSNull null];
-
-        if ([self scanString:@"=" intoString:NULL] == YES)
-            {
-            if ([self scanString:@"\"" intoString:NULL] == NO)
-                {
-                self.scanLocation = theSavedScanLocation;
-                self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-                return(NO);
-                }
-
-            [self scanUpToString:@"\"" intoString:&theAttributeValue];
-
-            if ([self scanString:@"\"" intoString:NULL] == NO)
-                {
-                self.scanLocation = theSavedScanLocation;
-                self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-                return(NO);
-                }
-            }
-
-        theAttributes[theAttributeName] = theAttributeValue;
-        }
-
-    if ([self scanString:@">" intoString:NULL] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-        return(NO);
-        }
-
-    if (outTag)
-        {
-        *outTag = theTag;
-        }
-
-    if (outAttributes && [theAttributes count] > 0)
-        {
-        *outAttributes = [theAttributes copy];
-        }
-
-    self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-    return(YES);
-    }
-
-- (BOOL)scanCloseMarkupTag:(NSString **)outTag
-    {
-    NSUInteger theSavedScanLocation = self.scanLocation;
-    NSCharacterSet *theSavedCharactersToBeSkipped = self.charactersToBeSkipped;
-
-    NSString *theTag = NULL;
-
-    if ([self scanString:@"</" intoString:NULL] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-        return(NO);
-        }
-        
-    self.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-
-    if ([self scanUpToString:@">" intoString:&theTag] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-
-        return(NO);
-        }
-
-    if ([self scanString:@">" intoString:NULL] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-        return(NO);
-        }
-
-    if (outTag)
-        {
-        *outTag = theTag;
-        }
-
-    self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-    return(YES);
-    }
-
-- (BOOL)scanStandaloneMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
-    {
-    NSUInteger theSavedScanLocation = self.scanLocation;
-    NSCharacterSet *theSavedCharactersToBeSkipped = self.charactersToBeSkipped;
-
-    if ([self scanString:@"<" intoString:NULL] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-        return(NO);
-        }
-
-    self.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-
-    NSString *theTag = NULL;
-    if ([self scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theTag] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-        return(NO);
-        }
-
-    NSMutableDictionary *theAttributes = [NSMutableDictionary dictionary];
-    while (self.isAtEnd == NO)
-        {
-        NSString *theAttributeName = NULL;
-        if ([self scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theAttributeName] == NO)
-            {
-            break;
-            }
-
-        id theAttributeValue = [NSNull null];
-
-        if ([self scanString:@"=" intoString:NULL] == YES)
-            {
-            if ([self scanString:@"\"" intoString:NULL] == NO)
-                {
-                self.scanLocation = theSavedScanLocation;
-                self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-                return(NO);
-                }
-
-            [self scanUpToString:@"\"" intoString:&theAttributeValue];
-
-            if ([self scanString:@"\"" intoString:NULL] == NO)
-                {
-                self.scanLocation = theSavedScanLocation;
-                self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-                return(NO);
-                }
-            }
-
-        theAttributes[theAttributeName] = theAttributeValue;
-        }
-
-    if ([self scanString:@"/>" intoString:NULL] == NO)
-        {
-        self.scanLocation = theSavedScanLocation;
-        self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-        return(NO);
-        }
-
-    if (outTag)
-        {
-        *outTag = theTag;
-        }
-
-    if (outAttributes && [theAttributes count] > 0)
-        {
-        *outAttributes = [theAttributes copy];
-        }
-
-    self.charactersToBeSkipped = theSavedCharactersToBeSkipped;
-    return(YES);
     }
 
 @end

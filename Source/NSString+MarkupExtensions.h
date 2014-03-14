@@ -33,8 +33,22 @@
 
 @interface NSString (MarkupExtensions)
 
+/**
+ *  Creates a copy of the target with links converted into hyperlinks.
+ *
+ * Internally this uses NSDataDetector.
+ */
 - (NSString *)stringByLinkifyingString;
-- (NSString *)stringByMarkingUpString;
+
+/**
+ *  Creates a copy of the target string with <, > and & characters turned into HTML entities. Optionally linkifies the string too.
+ */
 - (NSString *)stringByMarkingUpString:(BOOL)inLinkifyString;
+
+/**
+ *  As stringByMarkingUpString: with inLinkifyString set to YES.
+ */
+- (NSString *)stringByMarkingUpString;
+
 
 @end

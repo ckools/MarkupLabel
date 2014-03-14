@@ -41,28 +41,28 @@ extern NSString *const kMarkupOutlineMetaAttributeName;
 #pragma mark -
 
 @protocol CMarkupTransformerContext <NSObject>
-@property (readonly, nonatomic, strong) NSAttributedString *currentString;
+@property (readonly, nonatomic) NSAttributedString *currentString;
 @end
 
 #pragma mark -
 
-@class CSimpleHTMLTag;
+@class CSimpleMarkupTag;
 
 #pragma mark -
 
-typedef NSDictionary *(^BTagHandler)(CSimpleHTMLTag *tag, id <CMarkupTransformerContext> context);
+typedef NSDictionary *(^MarkupTagHandler)(CSimpleMarkupTag *tag, id <CMarkupTransformerContext> context);
 
 #pragma mark -
 
 @interface CMarkupTransformer : NSObject
 
-@property (readwrite, nonatomic, strong) NSCharacterSet *whitespaceCharacterSet;
+@property (readwrite, nonatomic) NSCharacterSet *whitespaceCharacterSet;
 
 - (NSAttributedString *)transformMarkup:(NSString *)value baseFont:(UIFont *)inBaseFont error:(NSError **)outError;
 
 - (void)addStandardStyles;
 
-- (void)addHandler:(BTagHandler)inHandler forTag:(NSString *)inTag;
+- (void)addHandler:(MarkupTagHandler)inHandler forTag:(NSString *)inTag;
 - (void)removeHandlerForTag:(NSString *)inTag;
 
 @end

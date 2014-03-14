@@ -35,6 +35,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Utility class for creating color objects (either UIColor or NSColor) from strings.
+ */
 @interface CColorConverter : NSObject
 
 + (instancetype)sharedInstance;
@@ -48,6 +51,7 @@
 #if TARGET_OS_IPHONE == 1
 
 @interface CColorConverter (UIColor)
+- (UIColor *)colorWithColorDictionary:(NSDictionary *)inDictionary error:(NSError **)outError;
 - (UIColor *)colorWithString:(NSString *)inString error:(NSError **)outError;
 @end
 

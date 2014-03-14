@@ -148,6 +148,31 @@ static CColorConverter *gSharedInstance = NULL;
 
 @implementation CColorConverter (UIColor)
 
+- (UIColor *)colorWithColorDictionary:(NSDictionary *)inDictionary error:(NSError **)outError
+    {
+    UIColor *theColor = NULL;
+
+	if ([inDictionary[@"type"] isEqualToString:@"RGB"])
+		{
+		const CGFloat R = [inDictionary[@"red"] floatValue];
+		const CGFloat G = [inDictionary[@"green"] floatValue];
+		const CGFloat B = [inDictionary[@"blue"] floatValue];
+		const CGFloat A = inDictionary[@"alpha"] ? [inDictionary[@"alpha"] floatValue] : 1.0f;
+
+		theColor = [UIColor colorWithRed:R green:G blue:B alpha:A];
+		}
+	else if ([inDictionary[@"type"] isEqualToString:@"HSB"])
+		{
+		const CGFloat H = [inDictionary[@"hue"] floatValue];
+		const CGFloat S = [inDictionary[@"saturation"] floatValue];
+		const CGFloat B = [inDictionary[@"brightness"] floatValue];
+		const CGFloat A = inDictionary[@"alpha"] ? [inDictionary[@"alpha"] floatValue] : 1.0f;
+
+		theColor = [UIColor colorWithHue:H saturation:S brightness:B alpha:A];
+		}
+	return(theColor);
+    }
+
 - (UIColor *)colorWithString:(NSString *)inString error:(NSError **)outError
 	{
 	UIColor *theColor = NULL;
@@ -182,29 +207,8 @@ static CColorConverter *gSharedInstance = NULL;
 
 	CColorConverter *theConverter = [[CColorConverter alloc] init];
 	NSDictionary *theDictionary = [theConverter colorDictionaryWithString:inString error:outError];
-	if ([theDictionary[@"type"] isEqualToString:@"RGB"])
-		{
-		const CGFloat R = [theDictionary[@"red"] floatValue];
-		const CGFloat G = [theDictionary[@"green"] floatValue];
-		const CGFloat B = [theDictionary[@"blue"] floatValue];
-		const CGFloat A = theDictionary[@"alpha"] ? [theDictionary[@"alpha"] floatValue] : 1.0f;
-
-		theColor = [UIColor colorWithRed:R green:G blue:B alpha:A];
-		}
-	else if ([theDictionary[@"type"] isEqualToString:@"HSB"])
-		{
-		const CGFloat H = [theDictionary[@"hue"] floatValue];
-		const CGFloat S = [theDictionary[@"saturation"] floatValue];
-		const CGFloat B = [theDictionary[@"brightness"] floatValue];
-		const CGFloat A = theDictionary[@"alpha"] ? [theDictionary[@"alpha"] floatValue] : 1.0f;
-
-		theColor = [UIColor colorWithHue:H saturation:S brightness:B alpha:A];
-		}
-	else
-		{
-		return(NULL);
-		}
-	return(theColor);
+    theColor = [self colorWithColorDictionary:theDictionary error:outError];
+    return(theColor);
 	}
 
 @end
