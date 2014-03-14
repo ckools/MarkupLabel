@@ -32,15 +32,14 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const kMarkupBoldAttributeName;
-extern NSString *const kMarkupItalicAttributeName;
-extern NSString *const kMarkupSizeAdjustmentAttributeName;
-extern NSString *const kMarkupFontNameAttributeName;
-extern NSString *const kMarkupFontSizeAttributeName;
-extern NSString *const kMarkupAttachmentAttributeName;
-extern NSString *const kMarkupOutlineAttributeName;
+extern NSString *const kMarkupBoldMetaAttributeName;
+extern NSString *const kMarkupItalicMetaAttributeName;
+extern NSString *const kMarkupSizeAdjustmentMetaAttributeName;
+extern NSString *const kMarkupFontNameMetaAttributeName;
+extern NSString *const kMarkupFontSizeMetaAttributeName;
+extern NSString *const kMarkupOutlineMetaAttributeName;
 
-@interface NSAttributedString (NSAttributedString_MarkupExtensions)
+@interface NSAttributedString (MarkupExtensions)
 
 + (NSAttributedString *)normalizedAttributedStringForAttributedString:(NSAttributedString *)inAttributedString baseFont:(UIFont *)inBaseFont;
 + (NSDictionary *)normalizeAttributes:(NSDictionary *)inAttributes baseFont:(UIFont *)inBaseFont;

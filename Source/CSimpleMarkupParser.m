@@ -99,7 +99,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                 NSString *theTagName = NULL;
                 NSDictionary *theAttributes = NULL;
 
-                if ([theScanner scanCloseTag:&theTagName] == YES)
+                if ([theScanner scanCloseMarkupTag:&theTagName] == YES)
                     {
                     CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
                     theTag.name = theTagName;
@@ -126,7 +126,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
                     [theTagStack removeObjectsInRange:(NSRange){ .location = theIndex, .length = theTagStack.count - theIndex }];
                     }
-                else if ([theScanner scanOpenTag:&theTagName attributes:&theAttributes] == YES)
+                else if ([theScanner scanOpenMarkupTag:&theTagName attributes:&theAttributes] == YES)
                     {
                     CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
                     theTag.name = theTagName;
@@ -152,7 +152,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                         [theTagStack addObject:theTag];
                         }
                     }
-                else if ([theScanner scanStandaloneTag:&theTagName attributes:&theAttributes] == YES)
+                else if ([theScanner scanStandaloneMarkupTag:&theTagName attributes:&theAttributes] == YES)
                     {
                     CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
                     theTag.name = theTagName;
@@ -244,7 +244,9 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
         if (theString.length > 0)
             {
+            // TODO this is never used - what is for?
             theLastCharacterWasWhitespace = [self.whitespaceCharacterSet characterIsMember:[theString characterAtIndex:theString.length - 1]];
+
             self.textHandler(theString, theTagStack);
             }
         }

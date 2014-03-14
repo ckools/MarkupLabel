@@ -35,6 +35,8 @@
 
 @interface UILabel (MarkupExtensions)
 
++ (void)setDefaultMarkupValueTransformer:(CMarkupValueTransformer *)inDefaultMarkupValueTransformer;
+
 @property (readwrite, nonatomic, strong) CMarkupValueTransformer *markupValueTransformer;
 
 - (void)setMarkup:(NSString *)inMarkup;

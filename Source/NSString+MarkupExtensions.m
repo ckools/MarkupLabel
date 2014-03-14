@@ -31,7 +31,7 @@
 
 #import "NSString+MarkupExtensions.h"
 
-@implementation NSString (NSString_MarkupExtensions)
+@implementation NSString (MarkupExtensions)
 
 - (NSString *)stringByLinkifyingString
     {

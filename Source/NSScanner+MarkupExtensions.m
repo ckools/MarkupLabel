@@ -33,7 +33,7 @@
 
 @implementation NSScanner (MarkupExtensions)
 
-- (BOOL)scanOpenTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes
+- (BOOL)scanOpenMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes
     {
     NSUInteger theSavedScanLocation = self.scanLocation;
     NSCharacterSet *theSavedCharactersToBeSkipped = self.charactersToBeSkipped;
@@ -109,7 +109,7 @@
     return(YES);
     }
 
-- (BOOL)scanCloseTag:(NSString **)outTag
+- (BOOL)scanCloseMarkupTag:(NSString **)outTag
     {
     NSUInteger theSavedScanLocation = self.scanLocation;
     NSCharacterSet *theSavedCharactersToBeSkipped = self.charactersToBeSkipped;
@@ -149,7 +149,7 @@
     return(YES);
     }
 
-- (BOOL)scanStandaloneTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
+- (BOOL)scanStandaloneMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
     {
     NSUInteger theSavedScanLocation = self.scanLocation;
     NSCharacterSet *theSavedCharactersToBeSkipped = self.charactersToBeSkipped;

@@ -31,7 +31,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString (NSString_MarkupExtensions)
+@interface NSString (MarkupExtensions)
 
 - (NSString *)stringByLinkifyingString;
 - (NSString *)stringByMarkingUpString;

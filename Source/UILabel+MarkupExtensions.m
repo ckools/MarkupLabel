@@ -33,11 +33,17 @@
 
 #import <objc/runtime.h>
 
-#import "NSString+MarkupExtensions.h"
 #import "CMarkupValueTransformer.h"
 #import "NSAttributedString+MarkupExtensions.h"
 
 @implementation UILabel (MarkupExtensions)
+
+static CMarkupValueTransformer *gDefaultMarkupValueTransformer = NULL;
+
++ (void)setDefaultMarkupValueTransformer:(CMarkupValueTransformer *)inDefaultMarkupValueTransformer;
+    {
+    gDefaultMarkupValueTransformer = inDefaultMarkupValueTransformer;
+    }
 
 static void *kMarkupValueTransformerKey;
 
@@ -46,8 +52,13 @@ static void *kMarkupValueTransformerKey;
     CMarkupValueTransformer *theMarkupValueTransformer = objc_getAssociatedObject(self, &kMarkupValueTransformerKey);
     if (theMarkupValueTransformer == NULL)
         {
-        theMarkupValueTransformer = [[CMarkupValueTransformer alloc] init];
-        theMarkupValueTransformer.whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            gDefaultMarkupValueTransformer = [[CMarkupValueTransformer alloc] init];
+            gDefaultMarkupValueTransformer.whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
+            });
+
+        theMarkupValueTransformer = gDefaultMarkupValueTransformer;
         objc_setAssociatedObject(self, &kMarkupValueTransformerKey, theMarkupValueTransformer, OBJC_ASSOCIATION_RETAIN);
         }
     return(theMarkupValueTransformer);

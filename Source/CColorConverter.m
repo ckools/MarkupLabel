@@ -31,7 +31,7 @@
 
 #import "CColorConverter.h"
 
-static CGFloat StringToFloat(NSString *inString, CGFloat base);
+static double StringToFloat(NSString *inString, double base);
 static int hexdec(const char *hex, int len);
 
 @interface CColorConverter ()
@@ -264,7 +264,7 @@ static int hexdec(const char *hex, int len)
     return ret; 
     }
 
-static CGFloat StringToFloat(NSString *inString, CGFloat base)
+static double StringToFloat(NSString *inString, double base)
 	{
 	if ([inString characterAtIndex:inString.length - 1] == '%')
 		{
@@ -272,6 +272,6 @@ static CGFloat StringToFloat(NSString *inString, CGFloat base)
 		}
 	else
 		{
-		return([inString  doubleValue] / base);
+		return([inString doubleValue] / base);
 		}
 	}

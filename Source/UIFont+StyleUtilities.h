@@ -1,5 +1,5 @@
 //
-//  UIFont_CoreTextExtensions.h
+//  StyleUtilities.h
 //  TouchCode
 //
 //  Created by Jonathan Wight on 07/12/11.
@@ -33,12 +33,7 @@
 
 #import <CoreText/CoreText.h>
 
-@interface UIFont (UIFont_CoreTextExtensions)
-
-+ (UIFont *)fontWithCTFont:(CTFontRef)inCTFont;
-
-- (CTFontRef)CTFont;
-- (CGFontRef)CGFont;
+@interface UIFont (StyleUtilities)
 
 - (UIFont *)boldFont;
 - (UIFont *)italicFont;

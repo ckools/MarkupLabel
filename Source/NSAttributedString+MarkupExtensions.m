@@ -28,18 +28,16 @@
 
 #import "NSAttributedString+MarkupExtensions.h"
 
-#import "CMarkupValueTransformer.h"
-#import "UIFont+CoreTextExtensions.h"
+#import "UIFont+StyleUtilities.h"
 
-NSString *const kMarkupBoldAttributeName = @"com.touchcode.bold";
-NSString *const kMarkupItalicAttributeName = @"com.touchcode.italic";
-NSString *const kMarkupSizeAdjustmentAttributeName = @"com.touchcode.sizeAdjustment";
-NSString *const kMarkupFontNameAttributeName = @"com.touchcode.fontName";
-NSString *const kMarkupFontSizeAttributeName = @"com.touchcode.fontSize";
-NSString *const kMarkupAttachmentAttributeName = @"com.touchcode.attachment";
-NSString *const kMarkupOutlineAttributeName = @"com.touchcode.outline";
+NSString *const kMarkupBoldMetaAttributeName = @"com.touchcode.bold";
+NSString *const kMarkupItalicMetaAttributeName = @"com.touchcode.italic";
+NSString *const kMarkupSizeAdjustmentMetaAttributeName = @"com.touchcode.sizeAdjustment";
+NSString *const kMarkupFontNameMetaAttributeName = @"com.touchcode.fontName";
+NSString *const kMarkupFontSizeMetaAttributeName = @"com.touchcode.fontSize";
+NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
 
-@implementation NSAttributedString (NSAttributedString_MarkupExtensions)
+@implementation NSAttributedString (MarkupExtensions)
 
 + (NSAttributedString *)normalizedAttributedStringForAttributedString:(NSAttributedString *)inAttributedString baseFont:(UIFont *)inBaseFont
     {
@@ -47,10 +45,9 @@ NSString *const kMarkupOutlineAttributeName = @"com.touchcode.outline";
     
     [theString enumerateAttributesInRange:(NSRange){ .length = theString.length } options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
         UIFont *theFont = inBaseFont;
-        CTFontRef theCTFont = (__bridge CTFontRef)attrs[(__bridge NSString *)kCTFontAttributeName];
-        if (theCTFont != NULL)
+        if (attrs[NSFontAttributeName] != NULL)
             {
-            theFont = [UIFont fontWithCTFont:theCTFont];
+            theFont = attrs[NSFontAttributeName];
             }
 
         attrs = [self normalizeAttributes:attrs baseFont:theFont];
@@ -65,25 +62,25 @@ NSString *const kMarkupOutlineAttributeName = @"com.touchcode.outline";
         
     // NORMALIZE ATTRIBUTES
     UIFont *theBaseFont = inBaseFont;
-    NSString *theFontName = theAttributes[kMarkupFontNameAttributeName];
+    NSString *theFontName = theAttributes[kMarkupFontNameMetaAttributeName];
     if (theFontName != NULL)
         {
         theBaseFont = [UIFont fontWithName:theFontName size:inBaseFont.pointSize];
-        [theAttributes removeObjectForKey:kMarkupFontNameAttributeName];
+        [theAttributes removeObjectForKey:kMarkupFontNameMetaAttributeName];
         }
     
     UIFont *theFont = theBaseFont;
     
-    BOOL theBoldFlag = [theAttributes[kMarkupBoldAttributeName] boolValue];
-    if (theAttributes[kMarkupBoldAttributeName] != NULL)
+    BOOL theBoldFlag = [theAttributes[kMarkupBoldMetaAttributeName] boolValue];
+    if (theAttributes[kMarkupBoldMetaAttributeName] != NULL)
         {
-        [theAttributes removeObjectForKey:kMarkupBoldAttributeName];
+        [theAttributes removeObjectForKey:kMarkupBoldMetaAttributeName];
         }
 
-    BOOL theItalicFlag = [theAttributes[kMarkupItalicAttributeName] boolValue];
-    if (theAttributes[kMarkupItalicAttributeName] != NULL)
+    BOOL theItalicFlag = [theAttributes[kMarkupItalicMetaAttributeName] boolValue];
+    if (theAttributes[kMarkupItalicMetaAttributeName] != NULL)
         {
-        [theAttributes removeObjectForKey:kMarkupItalicAttributeName];
+        [theAttributes removeObjectForKey:kMarkupItalicMetaAttributeName];
         }
     
     if (theBoldFlag == YES && theItalicFlag == YES)
@@ -99,35 +96,34 @@ NSString *const kMarkupOutlineAttributeName = @"com.touchcode.outline";
         theFont = theBaseFont.italicFont;
         }
 
-    if (theAttributes[kMarkupOutlineAttributeName] != NULL)
+    if (theAttributes[kMarkupOutlineMetaAttributeName] != NULL)
         {
-        [theAttributes removeObjectForKey:kMarkupOutlineAttributeName];
+        [theAttributes removeObjectForKey:kMarkupOutlineMetaAttributeName];
 		theAttributes[NSStrokeWidthAttributeName] = @(3.0);
         }
 
-    NSNumber *theSizeValue = theAttributes[kMarkupFontSizeAttributeName];
+    NSNumber *theSizeValue = theAttributes[kMarkupFontSizeMetaAttributeName];
     if (theSizeValue != NULL)
         {
         CGFloat theSize = [theSizeValue floatValue];
         theFont = [theFont fontWithSize:theSize];
         
-        [theAttributes removeObjectForKey:kMarkupFontSizeAttributeName];
+        [theAttributes removeObjectForKey:kMarkupFontSizeMetaAttributeName];
         }
 
 
-    NSNumber *theSizeAdjustment = theAttributes[kMarkupSizeAdjustmentAttributeName];
+    NSNumber *theSizeAdjustment = theAttributes[kMarkupSizeAdjustmentMetaAttributeName];
     if (theSizeAdjustment != NULL)
         {
         CGFloat theSize = [theSizeAdjustment floatValue];
         theFont = [theFont fontWithSize:theFont.pointSize + theSize];
         
-        [theAttributes removeObjectForKey:kMarkupSizeAdjustmentAttributeName];
+        [theAttributes removeObjectForKey:kMarkupSizeAdjustmentMetaAttributeName];
         }
 
     if (theFont != NULL)
         {
         theAttributes[NSFontAttributeName] = theFont;
-//        theAttributes[(__bridge NSString *)kCTFontAttributeName] = (__bridge id)theFont.CTFont;
         }
         
     return(theAttributes);

@@ -1,5 +1,5 @@
 //
-//  UIFont_CoreTextExtensions.m
+//  StyleUtilities.m
 //  TouchCode
 //
 //  Created by Jonathan Wight on 07/12/11.
@@ -29,15 +29,12 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import "UIFont+CoreTextExtensions.h"
+#import "UIFont+StyleUtilities.h"
 
-#import <objc/runtime.h>
-
-@implementation UIFont (UIFont_CoreTextExtensions)
+@implementation UIFont (StyleUtilities)
 
 + (NSSet *)featuresForFontName:(NSString *)inFontName
     {
-        
     NSMutableSet *theFeatures = nil;
         
     // In this section we use the NSScanner method
@@ -73,44 +70,6 @@
     }
 
     return(theFeatures);
-    }
-
-+ (UIFont *)fontWithCTFont:(CTFontRef)inCTFont
-    {
-    NSString *theFontName = (__bridge_transfer NSString *)CTFontCopyName(inCTFont, kCTFontFullNameKey);
-    UIFont *theFont = [UIFont fontWithName:theFontName size:CTFontGetSize(inCTFont)];
-    return(theFont);
-    }
-
-static void *kCTFontKey;
-
-- (CTFontRef)CTFont
-    {
-    // Alas poor [(id)theFont autorelease]...
-    CTFontRef theFont = (__bridge CTFontRef)objc_getAssociatedObject(self, &kCTFontKey);
-    if (theFont == NULL)
-        {
-        theFont = CTFontCreateWithName((__bridge CFStringRef)self.fontName, self.pointSize, NULL);
-        NSAssert1(theFont != NULL, @"Could not convert font %@ to CTFont", self.fontName);
-
-        objc_setAssociatedObject(self, &kCTFontKey, (__bridge id)theFont, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
-    return(theFont);
-    }
-
-static void *kCGFontKey;
-
-- (CGFontRef)CGFont
-    {
-    CGFontRef theFont = (__bridge CGFontRef)objc_getAssociatedObject(self, &kCGFontKey);
-    if (theFont == NULL)
-        {
-        theFont = CGFontCreateWithFontName((__bridge CFStringRef)self.fontName);
-        NSAssert1(theFont != NULL, @"Could not convert font %@ to CGFont", self.fontName);
-
-        objc_setAssociatedObject(self, &kCGFontKey, (__bridge_transfer id)theFont, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
-    return(theFont);
     }
 
 - (UIFont *)boldFont
@@ -188,7 +147,7 @@ static void *kCGFontKey;
             }
         }
 
-    NSLog(@"No bold/oblique font found in %@", [UIFont fontNamesForFamilyName:self.familyName]);
+    NSLog(@"No bold/oblique font found in %@ for %@", [UIFont fontNamesForFamilyName:self.familyName], self.familyName);
 
     return(NULL);
     }

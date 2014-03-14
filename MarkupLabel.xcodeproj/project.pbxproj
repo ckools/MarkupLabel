@@ -40,7 +40,7 @@
 		45906AA118D2468B008BC71D /* NSAttributedString+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9418D2468B008BC71D /* NSAttributedString+MarkupExtensions.m */; };
 		45906AA218D2468B008BC71D /* NSScanner+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9618D2468B008BC71D /* NSScanner+MarkupExtensions.m */; };
 		45906AA318D2468B008BC71D /* NSString+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9818D2468B008BC71D /* NSString+MarkupExtensions.m */; };
-		45906AA418D2468B008BC71D /* UIFont+CoreTextExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9B18D2468B008BC71D /* UIFont+CoreTextExtensions.m */; };
+		45906AA418D2468B008BC71D /* UIFont+StyleUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9B18D2468B008BC71D /* UIFont+StyleUtilities.m */; };
 		45906AA518D2468B008BC71D /* UILabel+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9D18D2468B008BC71D /* UILabel+MarkupExtensions.m */; };
 		45906AAE18D24984008BC71D /* CColorConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AAD18D24984008BC71D /* CColorConverter.m */; };
 /* End PBXBuildFile section */
@@ -92,8 +92,8 @@
 		45906A9618D2468B008BC71D /* NSScanner+MarkupExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+MarkupExtensions.m"; sourceTree = "<group>"; };
 		45906A9718D2468B008BC71D /* NSString+MarkupExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MarkupExtensions.h"; sourceTree = "<group>"; };
 		45906A9818D2468B008BC71D /* NSString+MarkupExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MarkupExtensions.m"; sourceTree = "<group>"; };
-		45906A9A18D2468B008BC71D /* UIFont+CoreTextExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+CoreTextExtensions.h"; sourceTree = "<group>"; };
-		45906A9B18D2468B008BC71D /* UIFont+CoreTextExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+CoreTextExtensions.m"; sourceTree = "<group>"; };
+		45906A9A18D2468B008BC71D /* UIFont+StyleUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+StyleUtilities.h"; sourceTree = "<group>"; };
+		45906A9B18D2468B008BC71D /* UIFont+StyleUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+StyleUtilities.m"; sourceTree = "<group>"; };
 		45906A9C18D2468B008BC71D /* UILabel+MarkupExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+MarkupExtensions.h"; sourceTree = "<group>"; };
 		45906A9D18D2468B008BC71D /* UILabel+MarkupExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+MarkupExtensions.m"; sourceTree = "<group>"; };
 		45906AAC18D24984008BC71D /* CColorConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CColorConverter.h; sourceTree = "<group>"; };
@@ -211,8 +211,8 @@
 				45906A9618D2468B008BC71D /* NSScanner+MarkupExtensions.m */,
 				45906A9718D2468B008BC71D /* NSString+MarkupExtensions.h */,
 				45906A9818D2468B008BC71D /* NSString+MarkupExtensions.m */,
-				45906A9A18D2468B008BC71D /* UIFont+CoreTextExtensions.h */,
-				45906A9B18D2468B008BC71D /* UIFont+CoreTextExtensions.m */,
+				45906A9A18D2468B008BC71D /* UIFont+StyleUtilities.h */,
+				45906A9B18D2468B008BC71D /* UIFont+StyleUtilities.m */,
 				45906A9C18D2468B008BC71D /* UILabel+MarkupExtensions.h */,
 				45906A9D18D2468B008BC71D /* UILabel+MarkupExtensions.m */,
 				45906AAC18D24984008BC71D /* CColorConverter.h */,
@@ -323,7 +323,7 @@
 				4502ED0518D232130054451D /* main.m in Sources */,
 				45906AAE18D24984008BC71D /* CColorConverter.m in Sources */,
 				45906AA018D2468B008BC71D /* CSimpleMarkupParser.m in Sources */,
-				45906AA418D2468B008BC71D /* UIFont+CoreTextExtensions.m in Sources */,
+				45906AA418D2468B008BC71D /* UIFont+StyleUtilities.m in Sources */,
 				45906A9F18D2468B008BC71D /* CMarkupValueTransformer.m in Sources */,
 				4502ED0F18D232140054451D /* NIMViewController.m in Sources */,
 				45906AA218D2468B008BC71D /* NSScanner+MarkupExtensions.m in Sources */,

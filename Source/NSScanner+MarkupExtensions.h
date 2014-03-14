@@ -33,8 +33,8 @@
 
 @interface NSScanner (MarkupExtensions)
 
-- (BOOL)scanOpenTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
-- (BOOL)scanCloseTag:(NSString **)outTag;
-- (BOOL)scanStandaloneTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
+- (BOOL)scanOpenMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
+- (BOOL)scanCloseMarkupTag:(NSString **)outTag;
+- (BOOL)scanStandaloneMarkupTag:(NSString **)outTag attributes:(NSDictionary **)outAttributes;
 
 @end

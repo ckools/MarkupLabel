@@ -33,7 +33,15 @@
 
 @class CSimpleHTMLTag;
 
-typedef NSDictionary *(^BTagHandler)(CSimpleHTMLTag *);
+@protocol CTagContext <NSObject>
+@property (readonly, nonatomic, strong) NSAttributedString *currentString;
+@end
+
+#pragma mark -
+
+typedef NSDictionary *(^BTagHandler)(CSimpleHTMLTag *tag, id <CTagContext> context);
+
+#pragma mark -
 
 @interface CMarkupValueTransformer : NSValueTransformer
 

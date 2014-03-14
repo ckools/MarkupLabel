@@ -31,17 +31,23 @@
 
 #import "CMarkupValueTransformer.h"
 
-#import <CoreText/CoreText.h>
-
-#import "CMarkupValueTransformer.h"
 #import "CSimpleMarkupParser.h"
 #import "NSAttributedString+MarkupExtensions.h"
 #import "CColorConverter.h"
 
+@interface CTagContext : NSObject <CTagContext>
+@property (readwrite, nonatomic, strong) NSAttributedString *currentString;
+@end
+
+#pragma mark -
+
+@implementation CTagContext
+@end
+
+#pragma mark -
+
 @interface CMarkupValueTransformer ()
 @property (readwrite, nonatomic, strong) NSMutableDictionary *tagHandlers;
-
-- (NSDictionary *)attributesForTagStack:(NSArray *)inTagStack;
 @end
 
 #pragma mark -
@@ -115,7 +121,7 @@
     };
 
     theParser.textHandler = ^(NSString *inString, NSArray *tagStack) {
-        NSDictionary *theAttributes = [self attributesForTagStack:tagStack];
+        NSDictionary *theAttributes = [self attributesForTagStack:tagStack currentString:theAttributedString];
         theTextAttributes = [theAttributes mutableCopy];
 
         if (theCurrentLink != NULL)
@@ -152,21 +158,21 @@
     BTagHandler theTagHandler = NULL;
 
     // ### b
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
-        return(@{kMarkupBoldAttributeName: @YES});
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+        return(@{kMarkupBoldMetaAttributeName: @YES});
         };
     [self addHandler:theTagHandler forTag:@"b"];
     [self addHandler:theTagHandler forTag:@"strong"];
 
     // ### i
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
-        return(@{kMarkupItalicAttributeName: @YES});
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+        return(@{kMarkupItalicMetaAttributeName: @YES});
         };
     [self addHandler:theTagHandler forTag:@"i"];
     [self addHandler:theTagHandler forTag:@"em"];
 
     // ### a
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
         return(@{
 			NSForegroundColorAttributeName: [UIColor blueColor],
             NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
@@ -175,7 +181,7 @@
     [self addHandler:theTagHandler forTag:@"a"];
 
     // ### mark
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
         return(@{
 			NSForegroundColorAttributeName: [UIColor yellowColor],
 			});
@@ -183,7 +189,7 @@
     [self addHandler:theTagHandler forTag:@"mark"];
 
     // ### strike
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
         return(@{
             NSStrikethroughStyleAttributeName: @(NSUnderlineStyleSingle)
             });
@@ -191,26 +197,26 @@
     [self addHandler:theTagHandler forTag:@"strike"];
 
     // ### outline
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
-        return(@{kMarkupOutlineAttributeName: @YES});
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+        return(@{kMarkupOutlineMetaAttributeName: @YES});
         };
     [self addHandler:theTagHandler forTag:@"outline"];
 
     // ### small
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
-        return(@{kMarkupSizeAdjustmentAttributeName: @-4.0f});
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+        return(@{kMarkupSizeAdjustmentMetaAttributeName: @-4.0f});
         };
     [self addHandler:theTagHandler forTag:@"small"];
 
     // ### font
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
 
         NSMutableDictionary *theStyle = [NSMutableDictionary dictionary];
 
         NSString *theFaceAttribute = inTag.attributes[@"face"];
         if (theFaceAttribute.length > 0)
             {
-            theStyle[kMarkupFontNameAttributeName] = theFaceAttribute;
+            theStyle[kMarkupFontNameMetaAttributeName] = theFaceAttribute;
             }
         NSString *theColorString = inTag.attributes[@"color"];
         if (theColorString.length > 0)
@@ -221,7 +227,7 @@
         NSString *theSizeString = inTag.attributes[@"size"];
         if (theSizeString.length > 0)
             {
-            theStyle[kMarkupFontSizeAttributeName] = @(theSizeString.floatValue);
+            theStyle[kMarkupFontSizeMetaAttributeName] = @(theSizeString.floatValue);
             }
         return(theStyle);
         };
@@ -229,7 +235,7 @@
 
 
     // ### Shadows
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
         NSShadow *theShadow = [[NSShadow alloc] init];
         theShadow.shadowOffset = (CGSize){ 1, 1 };
         return(@{
@@ -239,7 +245,7 @@
     [self addHandler:theTagHandler forTag:@"xshadow"];
 
     // ### Letter Press
-    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
         return(@{
             NSTextEffectAttributeName: NSTextEffectLetterpressStyle,
             });
@@ -259,16 +265,19 @@
 
 #pragma mark -
 
-- (NSDictionary *)attributesForTagStack:(NSArray *)inTagStack
+- (NSDictionary *)attributesForTagStack:(NSArray *)inTagStack currentString:(NSAttributedString *)inAttributedString
     {
     NSMutableDictionary *theCumulativeAttributes = [NSMutableDictionary dictionary];
+
+    CTagContext *theContext = [[CTagContext alloc] init];
+    theContext.currentString = inAttributedString;
 
     for (CSimpleHTMLTag *theTag in inTagStack)
         {
         BTagHandler theHandler = (self.tagHandlers)[theTag.name]; 
         if (theHandler)
             {
-            NSDictionary *theAttributes = theHandler(theTag);
+            NSDictionary *theAttributes = theHandler(theTag, theContext);
             [theCumulativeAttributes addEntriesFromDictionary:theAttributes];
             }
         }
@@ -284,7 +293,7 @@
 
 - (void)addStyleHandlerWithAttributes:(NSDictionary *)inDictionary forTag:(NSString *)inTag
     {
-    BTagHandler theHandler = ^(CSimpleHTMLTag *tag) {
+    BTagHandler theHandler = ^(CSimpleHTMLTag *tag, id <CTagContext> context) {
         return(inDictionary);
         };
     [self addHandler:theHandler forTag:inTag];
