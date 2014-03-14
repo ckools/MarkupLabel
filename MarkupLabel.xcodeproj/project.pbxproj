@@ -41,6 +41,7 @@
 		4570EB0C18D29EF40019D600 /* UIFont+StyleUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9B18D2468B008BC71D /* UIFont+StyleUtilities.m */; };
 		4570EB0D18D29EF40019D600 /* UILabel+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9D18D2468B008BC71D /* UILabel+MarkupExtensions.m */; };
 		4570EB0E18D29EF40019D600 /* CColorConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AAD18D24984008BC71D /* CColorConverter.m */; };
+		4570EB1018D2A2480019D600 /* CColorConvertUnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4570EB0F18D2A2480019D600 /* CColorConvertUnitTests.m */; };
 		45906A9F18D2468B008BC71D /* CMarkupTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9018D2468B008BC71D /* CMarkupTransformer.m */; };
 		45906AA018D2468B008BC71D /* CSimpleMarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9218D2468B008BC71D /* CSimpleMarkupParser.m */; };
 		45906AA318D2468B008BC71D /* NSString+MarkupExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906A9818D2468B008BC71D /* NSString+MarkupExtensions.m */; };
@@ -86,6 +87,7 @@
 		4502ED1F18D232140054451D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4502ED2118D232140054451D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4502ED2318D232140054451D /* UnitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTests.m; sourceTree = "<group>"; };
+		4570EB0F18D2A2480019D600 /* CColorConvertUnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CColorConvertUnitTests.m; sourceTree = "<group>"; };
 		45906A8F18D2468B008BC71D /* CMarkupTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMarkupTransformer.h; sourceTree = "<group>"; };
 		45906A9018D2468B008BC71D /* CMarkupTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMarkupTransformer.m; sourceTree = "<group>"; };
 		45906A9118D2468B008BC71D /* CSimpleMarkupParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSimpleMarkupParser.h; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				4502ED2318D232140054451D /* UnitTests.m */,
+				4570EB0F18D2A2480019D600 /* CColorConvertUnitTests.m */,
 				4502ED1E18D232140054451D /* Supporting Files */,
 			);
 			path = MarkupLabelTests;
@@ -333,6 +336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4502ED2418D232140054451D /* UnitTests.m in Sources */,
+				4570EB1018D2A2480019D600 /* CColorConvertUnitTests.m in Sources */,
 				4570EB0B18D29EF40019D600 /* NSString+MarkupExtensions.m in Sources */,
 				4570EB0D18D29EF40019D600 /* UILabel+MarkupExtensions.m in Sources */,
 				4570EB0E18D29EF40019D600 /* CColorConverter.m in Sources */,

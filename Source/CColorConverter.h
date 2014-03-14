@@ -31,13 +31,23 @@
 
 #import <Foundation/Foundation.h>
 
+#import <CoreGraphics/CoreGraphics.h>
+
 /**
  *  Utility class for creating color objects (either UIColor or NSColor) from strings.
+ *
+ *  The follow strings all represent the color green and can be understood by this class:
+ *  "0F0", "00FF00", "#00FF00", "rgb(0,100%,0), rgb(0,255,0), rgba(0,255,0,1.0), hsl(120,100%,100%)"
+ *
  */
 @interface CColorConverter : NSObject
 
 + (instancetype)sharedInstance;
 
+/**
+ *  Parses the color as defined by inString and returns a dictionary containing the color model name, channel and alpha information.
+ *  This is used to provide common cross-platform (iOS & Mac OS X) implementations.
+ */
 - (NSDictionary *)colorDictionaryWithString:(NSString *)inString error:(NSError **)outError;
 
 @end

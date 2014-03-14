@@ -35,7 +35,6 @@ static double StringToFloat(NSString *inString, double base);
 static int hexdec(const char *hex, int len);
 
 @interface CColorConverter ()
-@property (readwrite, atomic, strong) NSDictionary *namedColors;
 @end
 
 #pragma mark -
@@ -74,26 +73,41 @@ static CColorConverter *gSharedInstance = NULL;
 			CGFloat R = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:2]], 255.0);
 			CGFloat G = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:3]], 255.0);
 			CGFloat B = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:4]], 255.0);
-			CGFloat A = 1.0;
 			if ([theType isEqualToString:@"rgba"])
 				{
-				A = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:5]], 255.0);
+                CGFloat A = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:5]], 1.0);
+                theColor = @{ @"type": @"RGB", @"red":@(R), @"green":@(G), @"blue":@(B), @"alpha":@(A) };
 				}
+            else
+                {
+                if ([theResult rangeAtIndex:5].location != NSNotFound)
+                    {
+                    return(NULL);
+                    }
+                theColor = @{ @"type": @"RGB", @"red":@(R), @"green":@(G), @"blue":@(B) };
+                }
 
-			theColor = @{ @"type": @"RGB", @"red":@(R), @"green":@(G), @"blue":@(B), @"alpha":@(A) };
 			}
 		else if ([[theType substringToIndex:3] isEqualToString:@"hsl"])
 			{
 			CGFloat hue = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:2]], 360.0);
-			CGFloat saturation = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:3]], 255.0);
-			CGFloat brightness = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:4]], 255.0);
-			CGFloat A = 1.0;
+			CGFloat saturation = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:3]], 100.0);
+			CGFloat brightness = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:4]], 100.0);
 			if ([theType isEqualToString:@"hsla"])
 				{
-				A = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:5]], 255.0);
+                CGFloat A = 1.0;
+				A = StringToFloat([inString substringWithRange:[theResult rangeAtIndex:5]], 1.0);
+                theColor = @{ @"type": @"HSB", @"hue":@(hue), @"saturation":@(saturation), @"brightness":@(brightness), @"alpha":@(A) };
 				}
+            else
+                {
+                if ([theResult rangeAtIndex:5].location != NSNotFound)
+                    {
+                    return(NULL);
+                    }
+                theColor = @{ @"type": @"HSB", @"hue":@(hue), @"saturation":@(saturation), @"brightness":@(brightness) };
+                }
 
-			theColor = @{ @"type": @"HSB", @"hue":@(hue), @"saturation":@(saturation), @"brightness":@(brightness), @"alpha":@(A) };
 			}
 
 		return(theColor);
@@ -117,7 +131,7 @@ static CColorConverter *gSharedInstance = NULL;
 			CGFloat R = (CGFloat)((D & 0x0F00) >> 8) / 15.0;
 			CGFloat G = (CGFloat)((D & 0x00F0) >> 4) / 15.0;
 			CGFloat B = (CGFloat)((D & 0x000F) >> 0) / 15.0;
-			theColor = @{ @"type": @"RGB", @"red":@(R), @"green":@(G), @"blue":@(B), @"alpha":@(1.0) };
+			theColor = @{ @"type": @"RGB", @"red":@(R), @"green":@(G), @"blue":@(B) };
 			}
 		else
 			{
@@ -126,17 +140,11 @@ static CColorConverter *gSharedInstance = NULL;
 			CGFloat R = (CGFloat)((D & 0x00FF0000) >> 16) / 255.0;
 			CGFloat G = (CGFloat)((D & 0x0000FF00) >> 8) / 255.0;
 			CGFloat B = (CGFloat)((D & 0x000000FF) >> 0) / 255.0;
-			theColor = @{ @"type": @"RGB", @"red":@(R), @"green":@(G), @"blue":@(B), @"alpha":@(1.0) };
+			theColor = @{ @"type": @"RGB", @"red":@(R), @"green":@(G), @"blue":@(B) };
 			}
 		return(theColor);
 		}
 
-	return(theColor);
-	}
-
-- (NSDictionary *)colorDictionaryWithRed:(CGFloat)R green:(CGFloat)G blue:(CGFloat)B alpha:(CGFloat)A
-	{
-	NSDictionary *theColor = @{ @"type": @"RGB", @"red":@(R), @"green":@(G), @"blue":@(B), @"alpha":@(A) };
 	return(theColor);
 	}
 
@@ -176,35 +184,6 @@ static CColorConverter *gSharedInstance = NULL;
 - (UIColor *)colorWithString:(NSString *)inString error:(NSError **)outError
 	{
 	UIColor *theColor = NULL;
-
-	if (self.namedColors == NULL)
-		{
-	// ### Find colour by color name...
-		self.namedColors = @{
-			@"black": [UIColor blackColor],
-			@"darkGray": [UIColor darkGrayColor],
-			@"lightGray": [UIColor lightGrayColor],
-			@"white": [UIColor whiteColor],
-			@"gray": [UIColor grayColor],
-			@"red": [UIColor redColor],
-			@"green": [UIColor greenColor],
-			@"blue": [UIColor blueColor],
-			@"cyan": [UIColor cyanColor],
-			@"yellow": [UIColor yellowColor],
-			@"magenta": [UIColor magentaColor],
-			@"orange": [UIColor orangeColor],
-			@"purple": [UIColor purpleColor],
-			@"brown": [UIColor brownColor],
-			@"clear": [UIColor clearColor],
-			};
-		}
-
-	theColor = self.namedColors[inString];
-	if (theColor)
-		{
-		return(theColor);
-		}
-
 	CColorConverter *theConverter = [[CColorConverter alloc] init];
 	NSDictionary *theDictionary = [theConverter colorDictionaryWithString:inString error:outError];
     theColor = [self colorWithColorDictionary:theDictionary error:outError];
