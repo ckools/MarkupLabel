@@ -4,6 +4,11 @@ This is a subset of my CoreTextToy (https://github.com/schwa/CoreTextToy) projec
 
 Specifically this code allows you to use (simple) HTML markup with UILabel.
 
+Obligatory screenshots:
+
+![Before](Documentation/Before.png "Before")
+![After](Documentation/After.png "After")
+
 ## License
 
 This code is licensed under the 2-clause BSD license ("Simplified BSD License" or "FreeBSD License") license. The license is reproduced below:
