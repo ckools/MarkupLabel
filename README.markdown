@@ -1,6 +1,6 @@
 # MarkupLabel
 
-This is a subset of my CoreTextToy (https://github.com/schwa/CoreTextToy) project extracted out into it's own github repo.
+This is a subset of my CoreTextToy (https://github.com/schwa/CoreTextToy) project extracted out into its own github repo.
 
 Specifically this code allows you to use (simple) HTML markup with UILabel.
 
@@ -65,9 +65,9 @@ This code is crude and effective - but needs to be tested on _all_ iOS font name
 
 UIWebViews are expensive to create and are pretty much overkill when all you need is a simple UILabel type class that shows static styled text.
 
-### Why does this even exist? Why not just use https://github.com/Cocoanetics/NSAttributedString-Additions-for-HTML
+### Why does this even exist? Why not use NSHTMLTextDocumentType?
 
-CCoreTextLabel is designed simply to show static text on screen, akin to UILabel. "NSAttributedString-Additions-for-HTML" seems to do a lot of things that I just dont need.
+TODO: Elaborate here (https://twitter.com/mattyohe/status/444320277812748288)
 
 ### How much HTML does this thing support?
 
@@ -77,7 +77,7 @@ Only a handful of tags are supported right now, but you can define your own quit
 
 ### What about all the tags CoreTextToy provides?
 
-UILabel isn't quite as configurable as CoreTextToy's label code. As such not all tags supported there are supported by this code. Go use CoreTextToy if you need image tags and strikethrough etc.
+UILabel isn't quite as configurable as CoreTextToy's label code. As such not all tags supported there are supported by this code. Go use CoreTextToy or NSHTMLTextDocumentType if you need image tags.
 
 ### So how do I get HTML into a UILabel?
 
@@ -89,7 +89,7 @@ The quick way:
     // Error checking goes here.
     theLabel.attributedString = theAttributedString
 
-The quicker way (if you want to use the CCoreTextLabel_HTMLExtensions category)
+The quicker way:
 
     NSString *theMarkup = @"<b>Hello world</b>";
     theLabel.markup = theMarkup;
@@ -97,6 +97,8 @@ The quicker way (if you want to use the CCoreTextLabel_HTMLExtensions category)
 For the long way, see "How do I add custom styles?"
 
 ### How do I add custom styles?
+
+(TODO This section is out of date and is about to change massively).
 
     // Here's the markup we want to put into our. Note the custom <username> tag
     NSString *theMarkup = [NSString stringWithFormat:@"<username>%@</username> %@", theUsername, theBody];
