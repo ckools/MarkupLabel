@@ -92,32 +92,33 @@ The quick way:
 The quicker way:
 
     NSString *theMarkup = @"<b>Hello world</b>";
-    theLabel.markup = theMarkup;
+    [theLabel setMarkup:theMarkup];
 
 For the long way, see "How do I add custom styles?"
 
 ### How do I add custom styles?
 
-(TODO This section is out of date and is about to change massively).
+If you dont like the built-in standard styles you can replace them or add new ones. The process is pretty straightforward:
 
-    // Here's the markup we want to put into our. Note the custom <username> tag
+    // Here's the markup we want to put into our UILabel. Note the custom <username> tag
     NSString *theMarkup = [NSString stringWithFormat:@"<username>%@</username> %@", theUsername, theBody];
 
     NSError *theError = NULL;
 
-    // Create a transformer and give it a default font.
-    CMarkupValueTransformer *theTransformer = [[CMarkupValueTransformer alloc] init];
-    theTransformer.standardFont = [UIFont systemFontOfSize:13];
+    // Create a transformer and set up the standard styling (that part is optional)
+    CMarkupTransformer *theTransformer = [[CMarkupTransformer alloc] init];
+    [theTransformer addStandardStyles];
 
     // Create custom attributes for our new "username" tag
-    NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-        (__bridge id)[UIColor blueColor].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
-        (__bridge id)[theTransformer.standardFont boldFont].CTFont, (__bridge NSString *)kCTFontAttributeName,
-        NULL];
-    [theTransformer addStyleHandlerWithAttributes:theAttributes forTagSet:[NSSet setWithObject:@"username"]];
+    NSDictionary *theFormatDictionary = @{
+        NSForegroundColorAttributeName: [UIColor blueColor],
+        kMarkupFontNameMetaAttributeName: @"Helvetica",
+        };
+    [self addFormatDictionary:theFormatDictionary forTag:@"username"];
 
     // Transform the markup into a NSAttributedString
-    NSAttributedString *theAttributedString = [theTransformer transformedValue:theMarkup error:&theError];
+    NSAttributedString *theAttributedString = [theTransformer transformMarkup:inMarkup baseFont:self.font error:&theError];
 
     // Give the attributed string to the CCoreTextLabel.
-    self.label.text = theAttributedString;
+    self.label.attributedString = theAttributedString;
+

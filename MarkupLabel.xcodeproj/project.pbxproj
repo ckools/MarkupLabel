@@ -88,6 +88,7 @@
 		4502ED2118D232140054451D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4502ED2318D232140054451D /* UnitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTests.m; sourceTree = "<group>"; };
 		4570EB0F18D2A2480019D600 /* CColorConvertUnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CColorConvertUnitTests.m; sourceTree = "<group>"; };
+		45807E1018D3A470008E495E /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		45906A8F18D2468B008BC71D /* CMarkupTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMarkupTransformer.h; sourceTree = "<group>"; };
 		45906A9018D2468B008BC71D /* CMarkupTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMarkupTransformer.m; sourceTree = "<group>"; };
 		45906A9118D2468B008BC71D /* CSimpleMarkupParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSimpleMarkupParser.h; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 		4502ECEC18D232130054451D = {
 			isa = PBXGroup;
 			children = (
+				45807E1018D3A470008E495E /* README.markdown */,
 				45906A8C18D2468B008BC71D /* Source */,
 				4502ECFE18D232130054451D /* MarkupLabel */,
 				4502ED1D18D232140054451D /* MarkupLabelTests */,

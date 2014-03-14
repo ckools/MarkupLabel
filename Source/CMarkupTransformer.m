@@ -55,6 +55,7 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
 
 @interface CMarkupTransformer ()
 @property (readwrite, nonatomic, strong) NSMutableDictionary *tagHandlers;
+@property (readwrite, nonatomic, strong) NSMutableDictionary *formatDictionaries;
 @end
 
 #pragma mark -
@@ -66,6 +67,7 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
 	if ((self = [super init]) != NULL)
 		{
         _tagHandlers = [NSMutableDictionary dictionary];
+        _formatDictionaries = [NSMutableDictionary dictionary];
 		}
 	return(self);
 	}
@@ -88,7 +90,7 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
     theParser.openTagHandler = ^(CSimpleMarkupTag *inTag, NSArray *tagStack) {
         if ([inTag.name isEqualToString:@"a"] == YES)
             {
-            NSString *theURLString = (inTag.attributes)[@"href"];
+            NSString *theURLString = inTag.attributes[@"href"];
             if ((id)theURLString != [NSNull null] && theURLString.length > 0)
                 {
                 theCurrentLink = [NSURL URLWithString:theURLString];
@@ -106,7 +108,7 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
             {
             theCurrentLink = NULL;
             }
-    };
+        };
 
     theParser.textHandler = ^(NSString *inString, NSArray *tagStack) {
         NSDictionary *theAttributes = [self attributesForTagStack:tagStack currentString:theAttributedString];
@@ -120,16 +122,9 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
         [theAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:inString attributes:theTextAttributes]];
         };
 
-    // In this section we use the NSScanner method
-    // - (BOOL)scanCharactersFromSet:(NSCharacterSet *)scanSet intoString:(NSString **)stringValue
-    // Apparently `stringValue` is autoreleased and ARC does not handle that properly.
-    // Therefore we need this autorelease pool.
-    @autoreleasepool
+    if ([theParser parseString:theMarkup error:outError] == NO)
         {
-        if ([theParser parseString:theMarkup error:outError] == NO)
-            {
-            return(NULL);
-            }
+        return(NULL);
         }
 
     return([self normalizedAttributedStringForAttributedString:theAttributedString baseFont:inBaseFont]);
@@ -138,61 +133,43 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
 - (void)addStandardStyles
     {
     MarkupTagHandler theTagHandler = NULL;
+    NSDictionary *theFormatDictionary = NULL;
 
     // ### b
-    theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
-        return(@{kMarkupBoldMetaAttributeName: @YES});
-        };
-    [self addHandler:theTagHandler forTag:@"b"];
-    [self addHandler:theTagHandler forTag:@"strong"];
+    theFormatDictionary = @{ kMarkupBoldMetaAttributeName: @YES };
+    [self addFormatDictionary:theFormatDictionary forTag:@"b"];
+    [self addFormatDictionary:theFormatDictionary forTag:@"strong"];
 
     // ### i
-    theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
-        return(@{kMarkupItalicMetaAttributeName: @YES});
-        };
-    [self addHandler:theTagHandler forTag:@"i"];
-    [self addHandler:theTagHandler forTag:@"em"];
+    theFormatDictionary = @{ kMarkupItalicMetaAttributeName: @YES };
+    [self addFormatDictionary:theFormatDictionary forTag:@"i"];
+    [self addFormatDictionary:theFormatDictionary forTag:@"em"];
 
     // ### a
-    theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
-        return(@{
-			NSForegroundColorAttributeName: [UIColor blueColor],
-            NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-			});
+    theFormatDictionary = @{
+        NSForegroundColorAttributeName: [UIColor blueColor],
+        NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
         };
-    [self addHandler:theTagHandler forTag:@"a"];
+    [self addFormatDictionary:theFormatDictionary forTag:@"a"];
 
     // ### mark
-    theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
-        return(@{
-			NSForegroundColorAttributeName: [UIColor yellowColor],
-			});
-        };
-    [self addHandler:theTagHandler forTag:@"mark"];
+    theFormatDictionary = @{ NSForegroundColorAttributeName: [UIColor yellowColor] };
+    [self addFormatDictionary:theFormatDictionary forTag:@"mark"];
 
     // ### strike
-    theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
-        return(@{
-            NSStrikethroughStyleAttributeName: @(NSUnderlineStyleSingle)
-            });
-        };
-    [self addHandler:theTagHandler forTag:@"strike"];
+    theFormatDictionary = @{ NSStrikethroughStyleAttributeName: @(NSUnderlineStyleSingle) };
+    [self addFormatDictionary:theFormatDictionary forTag:@"strike"];
 
     // ### outline
-    theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
-        return(@{kMarkupOutlineMetaAttributeName: @YES});
-        };
-    [self addHandler:theTagHandler forTag:@"outline"];
+    theFormatDictionary = @{ kMarkupOutlineMetaAttributeName: @YES };
+    [self addFormatDictionary:theFormatDictionary forTag:@"outline"];
 
     // ### small
-    theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
-        return(@{kMarkupSizeAdjustmentMetaAttributeName: @-4.0f});
-        };
-    [self addHandler:theTagHandler forTag:@"small"];
+    theFormatDictionary = @{ kMarkupSizeAdjustmentMetaAttributeName: @(-4.0f) };
+    [self addFormatDictionary:theFormatDictionary forTag:@"small"];
 
     // ### font
     theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
-
         NSMutableDictionary *theStyle = [NSMutableDictionary dictionary];
 
         NSString *theFaceAttribute = inTag.attributes[@"face"];
@@ -215,7 +192,6 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
         };
     [self addHandler:theTagHandler forTag:@"font"];
 
-
     // ### Shadows
     theTagHandler = ^(CSimpleMarkupTag *inTag, id <CMarkupTransformerContext> context) {
         NSShadow *theShadow = [[NSShadow alloc] init];
@@ -235,9 +211,19 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
     [self addHandler:theTagHandler forTag:@"xletterpress"];
     }
 
+- (void)addFormatDictionary:(NSDictionary *)inDictionary forTag:(NSString *)inTag
+    {
+    self.formatDictionaries[inTag] = inDictionary;
+    }
+
+- (void)removeFormatDictionaryForTag:(NSString *)inTag
+    {
+    [self.formatDictionaries removeObjectForKey:inTag];
+    }
+
 - (void)addHandler:(MarkupTagHandler)inHandler forTag:(NSString *)inTag
     {
-    (self.tagHandlers)[inTag] = [inHandler copy];
+    self.tagHandlers[inTag] = [inHandler copy];
     }
 
 - (void)removeHandlerForTag:(NSString *)inTag
@@ -256,7 +242,13 @@ NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
 
     for (CSimpleMarkupTag *theTag in inTagStack)
         {
-        MarkupTagHandler theHandler = (self.tagHandlers)[theTag.name]; 
+        NSDictionary *theFormatDictionary = self.formatDictionaries[theTag.name];
+        if (theFormatDictionary)
+            {
+            [theCumulativeAttributes addEntriesFromDictionary:theFormatDictionary];
+            }
+
+        MarkupTagHandler theHandler = self.tagHandlers[theTag.name];
         if (theHandler)
             {
             NSDictionary *theAttributes = theHandler(theTag, theContext);

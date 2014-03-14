@@ -55,6 +55,9 @@ typedef NSDictionary *(^MarkupTagHandler)(CSimpleMarkupTag *tag, id <CMarkupTran
 
 - (void)addStandardStyles;
 
+- (void)addFormatDictionary:(NSDictionary *)inDictionary forTag:(NSString *)inTag;
+- (void)removeFormatDictionaryForTag:(NSString *)inTag;
+
 - (void)addHandler:(MarkupTagHandler)inHandler forTag:(NSString *)inTag;
 - (void)removeHandlerForTag:(NSString *)inTag;
 
