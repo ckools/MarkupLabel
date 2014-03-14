@@ -38,6 +38,7 @@
 @interface CColorConverter : NSObject
 
 + (instancetype)sharedInstance;
+
 - (NSDictionary *)colorDictionaryWithString:(NSString *)inString error:(NSError **)outError;
 
 @end

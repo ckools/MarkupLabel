@@ -31,34 +31,38 @@
 
 #import <Foundation/Foundation.h>
 
-@class CSimpleHTMLTag;
+extern NSString *const kMarkupBoldMetaAttributeName;
+extern NSString *const kMarkupItalicMetaAttributeName;
+extern NSString *const kMarkupSizeAdjustmentMetaAttributeName;
+extern NSString *const kMarkupFontNameMetaAttributeName;
+extern NSString *const kMarkupFontSizeMetaAttributeName;
+extern NSString *const kMarkupOutlineMetaAttributeName;
 
-@protocol CTagContext <NSObject>
+#pragma mark -
+
+@protocol CMarkupTransformerContext <NSObject>
 @property (readonly, nonatomic, strong) NSAttributedString *currentString;
 @end
 
 #pragma mark -
 
-typedef NSDictionary *(^BTagHandler)(CSimpleHTMLTag *tag, id <CTagContext> context);
+@class CSimpleHTMLTag;
 
 #pragma mark -
 
-@interface CMarkupValueTransformer : NSValueTransformer
+typedef NSDictionary *(^BTagHandler)(CSimpleHTMLTag *tag, id <CMarkupTransformerContext> context);
+
+#pragma mark -
+
+@interface CMarkupTransformer : NSObject
 
 @property (readwrite, nonatomic, strong) NSCharacterSet *whitespaceCharacterSet;
 
-- (id)transformedValue:(id)value error:(NSError **)outError;
+- (NSAttributedString *)transformMarkup:(NSString *)value baseFont:(UIFont *)inBaseFont error:(NSError **)outError;
 
-- (void)resetStyles;
 - (void)addStandardStyles;
 
 - (void)addHandler:(BTagHandler)inHandler forTag:(NSString *)inTag;
 - (void)removeHandlerForTag:(NSString *)inTag;
 
-@end
-
-#pragma mark -
-
-@interface CMarkupValueTransformer (CMarkupValueTransformer_ConvenienceExtensions)
-- (void)addStyleHandlerWithAttributes:(NSDictionary *)inDictionary forTag:(NSString *)inTag;
 @end

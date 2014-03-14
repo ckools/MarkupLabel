@@ -29,60 +29,48 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import "CMarkupValueTransformer.h"
+#import "CMarkupTransformer.h"
 
 #import "CSimpleMarkupParser.h"
-#import "NSAttributedString+MarkupExtensions.h"
 #import "CColorConverter.h"
+#import "UIFont+StyleUtilities.h"
 
-@interface CTagContext : NSObject <CTagContext>
+NSString *const kMarkupBoldMetaAttributeName = @"com.touchcode.bold";
+NSString *const kMarkupItalicMetaAttributeName = @"com.touchcode.italic";
+NSString *const kMarkupSizeAdjustmentMetaAttributeName = @"com.touchcode.sizeAdjustment";
+NSString *const kMarkupFontNameMetaAttributeName = @"com.touchcode.fontName";
+NSString *const kMarkupFontSizeMetaAttributeName = @"com.touchcode.fontSize";
+NSString *const kMarkupOutlineMetaAttributeName = @"com.touchcode.outline";
+
+@interface CMarkupTransformerContext : NSObject <CMarkupTransformerContext>
 @property (readwrite, nonatomic, strong) NSAttributedString *currentString;
 @end
 
 #pragma mark -
 
-@implementation CTagContext
+@implementation CMarkupTransformerContext
 @end
 
 #pragma mark -
 
-@interface CMarkupValueTransformer ()
+@interface CMarkupTransformer ()
 @property (readwrite, nonatomic, strong) NSMutableDictionary *tagHandlers;
 @end
 
 #pragma mark -
 
-@implementation CMarkupValueTransformer
-
-+ (Class)transformedValueClass
-    {
-    return([NSAttributedString class]);
-    }
-
-+ (BOOL)allowsReverseTransformation
-    {
-    return(NO);
-    }
+@implementation CMarkupTransformer
 
 - (id)init
 	{
 	if ((self = [super init]) != NULL)
 		{
         _tagHandlers = [NSMutableDictionary dictionary];
-
-        [self resetStyles];
-
-        [self addStandardStyles];
 		}
 	return(self);
 	}
     
-- (id)transformedValue:(id)value
-    {
-    return([self transformedValue:value error:NULL]);
-    }
-
-- (id)transformedValue:(id)value error:(NSError **)outError
+- (NSAttributedString *)transformMarkup:(NSString *)value baseFont:(UIFont *)inBaseFont error:(NSError **)outError;
     {
     NSString *theMarkup = value;
 
@@ -142,15 +130,9 @@
             {
             return(NULL);
             }
-
         }
 
-    return(theAttributedString);
-    }
-
-- (void)resetStyles
-    {
-    self.tagHandlers = [NSMutableDictionary dictionary];
+    return([self normalizedAttributedStringForAttributedString:theAttributedString baseFont:inBaseFont]);
     }
 
 - (void)addStandardStyles
@@ -158,21 +140,21 @@
     BTagHandler theTagHandler = NULL;
 
     // ### b
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         return(@{kMarkupBoldMetaAttributeName: @YES});
         };
     [self addHandler:theTagHandler forTag:@"b"];
     [self addHandler:theTagHandler forTag:@"strong"];
 
     // ### i
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         return(@{kMarkupItalicMetaAttributeName: @YES});
         };
     [self addHandler:theTagHandler forTag:@"i"];
     [self addHandler:theTagHandler forTag:@"em"];
 
     // ### a
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         return(@{
 			NSForegroundColorAttributeName: [UIColor blueColor],
             NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
@@ -181,7 +163,7 @@
     [self addHandler:theTagHandler forTag:@"a"];
 
     // ### mark
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         return(@{
 			NSForegroundColorAttributeName: [UIColor yellowColor],
 			});
@@ -189,7 +171,7 @@
     [self addHandler:theTagHandler forTag:@"mark"];
 
     // ### strike
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         return(@{
             NSStrikethroughStyleAttributeName: @(NSUnderlineStyleSingle)
             });
@@ -197,19 +179,19 @@
     [self addHandler:theTagHandler forTag:@"strike"];
 
     // ### outline
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         return(@{kMarkupOutlineMetaAttributeName: @YES});
         };
     [self addHandler:theTagHandler forTag:@"outline"];
 
     // ### small
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         return(@{kMarkupSizeAdjustmentMetaAttributeName: @-4.0f});
         };
     [self addHandler:theTagHandler forTag:@"small"];
 
     // ### font
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
 
         NSMutableDictionary *theStyle = [NSMutableDictionary dictionary];
 
@@ -235,7 +217,7 @@
 
 
     // ### Shadows
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         NSShadow *theShadow = [[NSShadow alloc] init];
         theShadow.shadowOffset = (CGSize){ 1, 1 };
         return(@{
@@ -245,7 +227,7 @@
     [self addHandler:theTagHandler forTag:@"xshadow"];
 
     // ### Letter Press
-    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CTagContext> context) {
+    theTagHandler = ^(CSimpleHTMLTag *inTag, id <CMarkupTransformerContext> context) {
         return(@{
             NSTextEffectAttributeName: NSTextEffectLetterpressStyle,
             });
@@ -269,7 +251,7 @@
     {
     NSMutableDictionary *theCumulativeAttributes = [NSMutableDictionary dictionary];
 
-    CTagContext *theContext = [[CTagContext alloc] init];
+    CMarkupTransformerContext *theContext = [[CMarkupTransformerContext alloc] init];
     theContext.currentString = inAttributedString;
 
     for (CSimpleHTMLTag *theTag in inTagStack)
@@ -285,18 +267,95 @@
     return(theCumulativeAttributes);
     }
 
-@end
-
-#pragma mark -
-
-@implementation CMarkupValueTransformer (CMarkupValueTransformer_ConvenienceExtensions)
-
-- (void)addStyleHandlerWithAttributes:(NSDictionary *)inDictionary forTag:(NSString *)inTag
+- (NSAttributedString *)normalizedAttributedStringForAttributedString:(NSAttributedString *)inAttributedString baseFont:(UIFont *)inBaseFont
     {
-    BTagHandler theHandler = ^(CSimpleHTMLTag *tag, id <CTagContext> context) {
-        return(inDictionary);
-        };
-    [self addHandler:theHandler forTag:inTag];
+    NSMutableAttributedString *theString = [inAttributedString mutableCopy];
+    
+    [theString enumerateAttributesInRange:(NSRange){ .length = theString.length } options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+        UIFont *theFont = inBaseFont;
+        if (attrs[NSFontAttributeName] != NULL)
+            {
+            theFont = attrs[NSFontAttributeName];
+            }
+
+        attrs = [self normalizeAttributes:attrs baseFont:theFont];
+        [theString setAttributes:attrs range:range];
+        }];
+    return(theString);
     }
+
+- (NSDictionary *)normalizeAttributes:(NSDictionary *)inAttributes baseFont:(UIFont *)inBaseFont
+    {
+    NSMutableDictionary *theAttributes = [inAttributes mutableCopy];
+        
+    // NORMALIZE ATTRIBUTES
+    UIFont *theBaseFont = inBaseFont;
+    NSString *theFontName = theAttributes[kMarkupFontNameMetaAttributeName];
+    if (theFontName != NULL)
+        {
+        theBaseFont = [UIFont fontWithName:theFontName size:inBaseFont.pointSize];
+        [theAttributes removeObjectForKey:kMarkupFontNameMetaAttributeName];
+        }
+    
+    UIFont *theFont = theBaseFont;
+    
+    BOOL theBoldFlag = [theAttributes[kMarkupBoldMetaAttributeName] boolValue];
+    if (theAttributes[kMarkupBoldMetaAttributeName] != NULL)
+        {
+        [theAttributes removeObjectForKey:kMarkupBoldMetaAttributeName];
+        }
+
+    BOOL theItalicFlag = [theAttributes[kMarkupItalicMetaAttributeName] boolValue];
+    if (theAttributes[kMarkupItalicMetaAttributeName] != NULL)
+        {
+        [theAttributes removeObjectForKey:kMarkupItalicMetaAttributeName];
+        }
+    
+    if (theBoldFlag == YES && theItalicFlag == YES)
+        {
+        theFont = theBaseFont.boldItalicFont;
+        }
+    else if (theBoldFlag == YES)
+        {
+        theFont = theBaseFont.boldFont;
+        }
+    else if (theItalicFlag == YES)
+        {
+        theFont = theBaseFont.italicFont;
+        }
+
+    if (theAttributes[kMarkupOutlineMetaAttributeName] != NULL)
+        {
+        [theAttributes removeObjectForKey:kMarkupOutlineMetaAttributeName];
+		theAttributes[NSStrokeWidthAttributeName] = @(3.0);
+        }
+
+    NSNumber *theSizeValue = theAttributes[kMarkupFontSizeMetaAttributeName];
+    if (theSizeValue != NULL)
+        {
+        CGFloat theSize = [theSizeValue floatValue];
+        theFont = [theFont fontWithSize:theSize];
+        
+        [theAttributes removeObjectForKey:kMarkupFontSizeMetaAttributeName];
+        }
+
+
+    NSNumber *theSizeAdjustment = theAttributes[kMarkupSizeAdjustmentMetaAttributeName];
+    if (theSizeAdjustment != NULL)
+        {
+        CGFloat theSize = [theSizeAdjustment floatValue];
+        theFont = [theFont fontWithSize:theFont.pointSize + theSize];
+        
+        [theAttributes removeObjectForKey:kMarkupSizeAdjustmentMetaAttributeName];
+        }
+
+    if (theFont != NULL)
+        {
+        theAttributes[NSFontAttributeName] = theFont;
+        }
+        
+    return(theAttributes);
+    }
+
 
 @end

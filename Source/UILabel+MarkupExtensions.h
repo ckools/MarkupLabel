@@ -31,14 +31,23 @@
 
 #import <UIKit/UIKit.h>
 
-@class CMarkupValueTransformer;
+@class CMarkupTransformer;
 
+/**
+ *  Adds markup support to the stock UILabel class.
+ */
 @interface UILabel (MarkupExtensions)
 
-+ (void)setDefaultMarkupValueTransformer:(CMarkupValueTransformer *)inDefaultMarkupValueTransformer;
++ (void)setDefaultMarkupTransformer:(CMarkupTransformer *)inDefaultMarkupTransformer;
 
-@property (readwrite, nonatomic, strong) CMarkupValueTransformer *markupValueTransformer;
+/**
+ *  The CMarkupTransformer to use in the setMarkup: method. If you do not provide an explicit transformer for each instant it uses the default transformer instead. See setDefaultMarkupTransformer:.
+ */
+@property (readwrite, nonatomic, strong) CMarkupTransformer *markupTransformer;
 
+/**
+ *  Uses markupTransformer to convert the provided markup text into an NSAttributedString, then sets the targets attributedString property.
+ */
 - (void)setMarkup:(NSString *)inMarkup;
 
 @end

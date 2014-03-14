@@ -33,49 +33,47 @@
 
 #import <objc/runtime.h>
 
-#import "CMarkupValueTransformer.h"
-#import "NSAttributedString+MarkupExtensions.h"
+#import "CMarkupTransformer.h"
 
 @implementation UILabel (MarkupExtensions)
 
-static CMarkupValueTransformer *gDefaultMarkupValueTransformer = NULL;
+static CMarkupTransformer *gDefaultMarkupTransformer = NULL;
 
-+ (void)setDefaultMarkupValueTransformer:(CMarkupValueTransformer *)inDefaultMarkupValueTransformer;
++ (void)setDefaultMarkupTransformer:(CMarkupTransformer *)inDefaultMarkupTransformer;
     {
-    gDefaultMarkupValueTransformer = inDefaultMarkupValueTransformer;
+    gDefaultMarkupTransformer = inDefaultMarkupTransformer;
     }
 
-static void *kMarkupValueTransformerKey;
+static void *kMarkupTransformerKey;
 
-- (CMarkupValueTransformer *)markupValueTransformer
+- (CMarkupTransformer *)markupTransformer
     {
-    CMarkupValueTransformer *theMarkupValueTransformer = objc_getAssociatedObject(self, &kMarkupValueTransformerKey);
-    if (theMarkupValueTransformer == NULL)
+    CMarkupTransformer *theMarkupTransformer = objc_getAssociatedObject(self, &kMarkupTransformerKey);
+    if (theMarkupTransformer == NULL)
         {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            gDefaultMarkupValueTransformer = [[CMarkupValueTransformer alloc] init];
-            gDefaultMarkupValueTransformer.whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
+            gDefaultMarkupTransformer = [[CMarkupTransformer alloc] init];
+            gDefaultMarkupTransformer.whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
+            [gDefaultMarkupTransformer addStandardStyles];
             });
 
-        theMarkupValueTransformer = gDefaultMarkupValueTransformer;
-        objc_setAssociatedObject(self, &kMarkupValueTransformerKey, theMarkupValueTransformer, OBJC_ASSOCIATION_RETAIN);
+        theMarkupTransformer = gDefaultMarkupTransformer;
+        objc_setAssociatedObject(self, &kMarkupTransformerKey, theMarkupTransformer, OBJC_ASSOCIATION_RETAIN);
         }
-    return(theMarkupValueTransformer);
+    return(theMarkupTransformer);
     }
     
-- (void)setMarkupValueTransformer:(CMarkupValueTransformer *)inMarkupValueTransformer
+- (void)setMarkupTransformer:(CMarkupTransformer *)inMarkupTransformer
     {
-    objc_setAssociatedObject(self, &kMarkupValueTransformerKey, inMarkupValueTransformer, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &kMarkupTransformerKey, inMarkupTransformer, OBJC_ASSOCIATION_RETAIN);
     }
 
 - (void)setMarkup:(NSString *)inMarkup
     {
     NSError *theError = NULL;
-    NSAttributedString *theAttributedString = [self.markupValueTransformer transformedValue:inMarkup error:&theError];
+    NSAttributedString *theAttributedString = [self.markupTransformer transformMarkup:inMarkup baseFont:self.font error:&theError];
     NSAssert1(theAttributedString != NULL, @"Could not transform HTML into attributed string: %@", theError);
-
-    theAttributedString = [NSAttributedString normalizedAttributedStringForAttributedString:theAttributedString baseFont:self.font];
 
     self.attributedText = theAttributedString;
     }
