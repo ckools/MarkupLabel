@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "MarkupLabel"
   s.version      = "0.0.1"
-  s.summary      = "TODO"
+  s.summary      = "Use markup (HTML-ish) with UILabel."
   s.homepage     = "https://github.com/schwa/MarkupLabel"
   s.license      = { :type => "BSD 2-Clause", :file => "LICENSE" }
   s.author       = { "Jonathan Wight" => "schwa@schwa.io" }
