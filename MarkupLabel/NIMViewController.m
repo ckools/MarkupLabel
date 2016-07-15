@@ -9,6 +9,7 @@
 #import "NIMViewController.h"
 
 #import "UILabel+MarkupExtensions.h"
+#import "CMarkupTransformer.h"
 
 @interface NIMViewController ()
 @end
@@ -18,7 +19,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     for (id theSubview in self.view.subviews)
         {
         if ([theSubview isKindOfClass:[UILabel class]] == NO)
@@ -29,7 +29,6 @@
         UILabel *theLabel = theSubview;
         [theLabel setMarkup:theLabel.text];
         }
-
 }
 
 
